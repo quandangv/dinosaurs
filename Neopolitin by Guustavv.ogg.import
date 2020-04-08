@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Neopolitin by Guustavv.ogg-c0750a6224bfa5eb1d3b1129c632308e.oggstr"
+
+[deps]
+
+source_file="res://Neopolitin by Guustavv.ogg"
+dest_files=[ "res://.import/Neopolitin by Guustavv.ogg-c0750a6224bfa5eb1d3b1129c632308e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

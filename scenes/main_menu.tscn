@@ -1,0 +1,643 @@
+[gd_scene load_steps=37 format=2]
+
+[ext_resource path="res://game_master.gd" type="Script" id=1]
+[ext_resource path="res://scenes/object_profile.tscn" type="PackedScene" id=2]
+[ext_resource path="res://font_scaler.gd" type="Script" id=3]
+[ext_resource path="res://theme/theme_land.tres" type="Theme" id=4]
+[ext_resource path="res://theme/theme_sand.tres" type="Theme" id=5]
+[ext_resource path="res://game_box.gd" type="Script" id=6]
+[ext_resource path="res://viewport_scaler.gd" type="Script" id=7]
+[ext_resource path="res://scenes/play_board.tscn" type="PackedScene" id=8]
+[ext_resource path="res://horizontal_filler.gd" type="Script" id=9]
+[ext_resource path="res://scenes/multiline_button.tscn" type="PackedScene" id=10]
+[ext_resource path="res://fonts/font_title.tres" type="DynamicFont" id=11]
+[ext_resource path="res://scenes/description.tscn" type="PackedScene" id=12]
+[ext_resource path="res://fonts/font_heading2.tres" type="DynamicFont" id=13]
+[ext_resource path="res://fonts/font_content.tres" type="DynamicFont" id=14]
+[ext_resource path="res://fonts/font_detail.tres" type="DynamicFont" id=15]
+[ext_resource path="res://Neopolitin by Guustavv.ogg" type="AudioStream" id=16]
+[ext_resource path="res://fonts/font_heading_1.tres" type="DynamicFont" id=17]
+[ext_resource path="res://wiggles.gd" type="Script" id=18]
+[ext_resource path="res://center_pivot.gd" type="Script" id=19]
+[ext_resource path="res://locale_swticher.gd" type="Script" id=20]
+[ext_resource path="res://ratio_limiter.gd" type="Script" id=21]
+[ext_resource path="res://scenes/choice.tscn" type="PackedScene" id=22]
+[ext_resource path="res://fonts/font_heading.tres" type="DynamicFont" id=23]
+[ext_resource path="res://choice_list.gd" type="Script" id=24]
+[ext_resource path="res://tick3.wav" type="AudioStream" id=25]
+[ext_resource path="res://tick1.wav" type="AudioStream" id=26]
+[ext_resource path="res://tick2.wav" type="AudioStream" id=27]
+[ext_resource path="res://scenes/simple_button.tscn" type="PackedScene" id=28]
+[ext_resource path="res://open_button.gd" type="Script" id=29]
+[ext_resource path="res://arts/background.svg" type="Texture" id=30]
+[ext_resource path="res://scenes/focus.gd" type="Script" id=31]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.380392, 0.803922, 0.113725, 0.996078 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.819608, 0.764706, 0.384314, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.380392, 0.803922, 0.113725, 0.996078 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.819608, 0.764706, 0.384314, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.407843, 0.866667, 0.117647, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 1, 0.92549, 0.45098, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+border_width_left = 1014
+border_width_top = 1014
+border_width_right = 1014
+border_width_bottom = 1014
+border_color = Color( 0, 0, 0, 0.376471 )
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+corner_detail = 16
+expand_margin_left = 1014.0
+expand_margin_right = 1014.0
+expand_margin_top = 1014.0
+expand_margin_bottom = 1014.0
+
+[node name="game_master" type="Node2D"]
+script = ExtResource( 1 )
+tilemap = NodePath("CanvasLayer/margin/game_box/viewport/world")
+main_menu = NodePath("CanvasLayer/margin/info_box/main_menu")
+game_choices = NodePath("CanvasLayer/margin/info_box/game_choices/choice_list")
+descriptions = NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble")
+game_over = NodePath("CanvasLayer/margin/info_box/game_over")
+message = NodePath("CanvasLayer/margin/info_box/message")
+focus = NodePath("CanvasLayer/focus")
+sumnary_theme = ExtResource( 5 )
+final_theme = ExtResource( 4 )
+object_profile = ExtResource( 2 )
+ticks = [ ExtResource( 26 ), ExtResource( 27 ), ExtResource( 25 ) ]
+sea_color = Color( 0.117647, 0.486275, 0.858824, 1 )
+land_color = Color( 0.407843, 0.866667, 0.117647, 1 )
+sand_color = Color( 1, 0.92549, 0.45098, 1 )
+wave_ratio = 0.15
+cell_types = [ "Hungry Dino", "Shark", "Coral", "Field", "Lonely Dino", "Mountain", "Shrub", "Social Dino", "Tree", "Waves", "Chicken", "Wolf", "Tsunami", "Marsh", "Sunken Ship", "Forgotten Temple" ]
+cell_conditions = [ [ "meat", "skull" ], [ "waves" ], [ "no_waves", "heart" ], [ "land", "uncrowded" ], [ "plant", "green_shield" ], [ "crowded", "invincible" ], [ "sand" ], [ "plant", "skull" ], [ "land", "crowded" ], [ "invincible" ], [ "plant" ], [ "meat", "heart" ], [ "invincible" ], [ "no_sand", "green_heart" ], [ "waves", "bloody_heart" ], [ "crowded", "bloody_heart" ] ]
+choice_steps = [ [ "Coral", "Field", "Mountain", "Tree", "Shrub", "Marsh" ], [ "Hungry Dino", "Social Dino", "Lonely Dino", "Shark", "Wolf", "Chicken" ], [ "Sunken Ship", "Forgotten Temple" ] ]
+object_count = [ 15, 7, 3 ]
+sea_cells = [ "Shark", "Coral", "Ship", "Tsunami", "Waves", "Sunken Ship" ]
+plants = [ "Tree", "Shrub", "Field" ]
+animals = [ "Hungry Dino", "Lonely Dino", "Social Dino", "Sheep", "Wolf", "Shark" ]
+structures = [ "Mountain", "Coral" ]
+instructions_focus = [ NodePath("CanvasLayer/margin/info_box/game_choices/choice_list/choice/minimized"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/title/conditions"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/stat"), NodePath("CanvasLayer/margin/game_box") ]
+instructions_message = [ "Choose an object", "Select a condition", "View the condition", "Put the object" ]
+
+[node name="wiggles" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+script = ExtResource( 18 )
+wiggle_targets = [ NodePath("../CanvasLayer/margin/info_box/main_menu/container/choices/button"), NodePath("../CanvasLayer/margin/info_box/main_menu/container/choices/button2") ]
+wiggle_range = 3
+map_layouts = [ "{\"land\":{\"(0, 3)\":\"Land\",\"(1, 1)\":\"Land\",\"(1, 3)\":\"Land\",\"(1, 4)\":\"Land\",\"(2, 1)\":\"Land\",\"(2, 2)\":\"Land\",\"(2, 3)\":\"Land\",\"(2, 4)\":\"Land\",\"(3, 0)\":\"Land\",\"(3, 1)\":\"Land\",\"(3, 2)\":\"Land\",\"(3, 3)\":\"Land\",\"(4, 0)\":\"Land\",\"(4, 1)\":\"Land\",\"(4, 2)\":\"Land\",\"(4, 7)\":\"Land\",\"(5, 1)\":\"Land\",\"(5, 2)\":\"Land\",\"(5, 7)\":\"Land\",\"(5, 8)\":\"Land\",\"(6, 6)\":\"Land\",\"(6, 7)\":\"Land\",\"(6, 8)\":\"Land\",\"(7, 5)\":\"Land\",\"(7, 6)\":\"Land\",\"(7, 7)\":\"Land\",\"(7, 8)\":\"Land\",\"(8, 5)\":\"Land\",\"(8, 6)\":\"Land\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"},\"objects\":{\"(0, 1)\":\"Waves\",\"(1, 7)\":\"Tsunami\",\"(2, 1)\":\"Marsh\",\"(2, 3)\":\"Chicken\",\"(2, 6)\":\"Waves\",\"(2, 7)\":\"Shark\",\"(3, 0)\":\"Marsh\",\"(3, 2)\":\"Lonely Dino\",\"(3, 3)\":\"Hungry Dino\",\"(3, 5)\":\"Shark\",\"(4, 0)\":\"Tree\",\"(4, 1)\":\"Tree\",\"(4, 3)\":\"Mountain\",\"(4, 4)\":\"Shrub\",\"(4, 5)\":\"Coral\",\"(5, 0)\":\"Coral\",\"(5, 1)\":\"Mountain\",\"(5, 2)\":\"Chicken\",\"(5, 3)\":\"Shrub\",\"(5, 4)\":\"Coral\",\"(5, 6)\":\"Shrub\",\"(5, 7)\":\"Chicken\",\"(5, 8)\":\"Field\",\"(6, 4)\":\"Shrub\",\"(6, 6)\":\"Chicken\",\"(6, 7)\":\"Chicken\",\"(6, 8)\":\"Field\",\"(7, 1)\":\"Shark\",\"(7, 5)\":\"Chicken\",\"(7, 6)\":\"Field\",\"(7, 7)\":\"Field\",\"(8, 1)\":\"Waves\"},\"sand\":{\"(0, 3)\":\"Sand\",\"(1, 1)\":\"Sand\",\"(1, 3)\":\"Sand\",\"(1, 4)\":\"Sand\",\"(2, 1)\":\"Sand\",\"(2, 2)\":\"Sand\",\"(2, 3)\":\"Sand\",\"(2, 4)\":\"Sand\",\"(3, 0)\":\"Sand\",\"(3, 1)\":\"Sand\",\"(3, 2)\":\"Sand\",\"(3, 3)\":\"Sand\",\"(3, 4)\":\"Sand\",\"(4, 0)\":\"Sand\",\"(4, 1)\":\"Sand\",\"(4, 2)\":\"Sand\",\"(4, 3)\":\"Sand\",\"(4, 4)\":\"Sand\",\"(4, 6)\":\"Sand\",\"(4, 7)\":\"Sand\",\"(5, 1)\":\"Sand\",\"(5, 2)\":\"Sand\",\"(5, 3)\":\"Sand\",\"(5, 5)\":\"Sand\",\"(5, 6)\":\"Sand\",\"(5, 7)\":\"Sand\",\"(5, 8)\":\"Sand\",\"(6, 4)\":\"Sand\",\"(6, 5)\":\"Sand\",\"(6, 6)\":\"Sand\",\"(6, 7)\":\"Sand\",\"(6, 8)\":\"Sand\",\"(7, 4)\":\"Sand\",\"(7, 5)\":\"Sand\",\"(7, 6)\":\"Sand\",\"(7, 7)\":\"Sand\",\"(7, 8)\":\"Sand\",\"(8, 5)\":\"Sand\",\"(8, 6)\":\"Sand\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(10, 6)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(12, 5)\":\"\",\"(12, 7)\":\"\",\"(13, 5)\":\"\",\"(13, 7)\":\"\",\"(14, 5)\":\"\",\"(14, 6)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(15, 6)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"},\"marsh\":{\"(1, 1)\":\"Marsh\",\"(2, 1)\":\"Marsh\",\"(3, 1)\":\"Marsh\",\"(3, 0)\":\"Marsh\"}}", "{\"land\":{\"(3, 2)\":\"Land\",\"(3, 3)\":\"Land\",\"(3, 4)\":\"Land\",\"(3, 5)\":\"Land\",\"(3, 6)\":\"Land\",\"(4, 2)\":\"Land\",\"(4, 3)\":\"Land\",\"(4, 4)\":\"Land\",\"(4, 5)\":\"Land\",\"(4, 6)\":\"Land\",\"(5, 2)\":\"Land\",\"(5, 3)\":\"Land\",\"(5, 4)\":\"Land\",\"(5, 5)\":\"Land\",\"(5, 6)\":\"Land\",\"(6, 3)\":\"Land\",\"(6, 4)\":\"Land\",\"(6, 5)\":\"Land\",\"(6, 6)\":\"Land\",\"(7, 4)\":\"Land\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"},\"objects\":{\"(0, 0)\":\"Waves\",\"(0, 1)\":\"Sunken Ship\",\"(0, 2)\":\"Waves\",\"(1, 0)\":\"Shark\",\"(1, 1)\":\"Waves\",\"(1, 2)\":\"Tsunami\",\"(1, 4)\":\"Shark\",\"(1, 8)\":\"Tsunami\",\"(2, 0)\":\"Tsunami\",\"(2, 3)\":\"Chicken\",\"(2, 6)\":\"Coral\",\"(2, 7)\":\"Shark\",\"(3, 2)\":\"Chicken\",\"(3, 4)\":\"Chicken\",\"(3, 5)\":\"Field\",\"(3, 6)\":\"Chicken\",\"(3, 7)\":\"Coral\",\"(4, 3)\":\"Tree\",\"(4, 4)\":\"Mountain\",\"(4, 5)\":\"Field\",\"(4, 6)\":\"Field\",\"(5, 1)\":\"Chicken\",\"(5, 3)\":\"Mountain\",\"(5, 4)\":\"Forgotten Temple\",\"(5, 5)\":\"Mountain\",\"(5, 6)\":\"Chicken\",\"(6, 2)\":\"Shrub\",\"(6, 3)\":\"Tree\",\"(6, 4)\":\"Tree\",\"(6, 5)\":\"Tree\",\"(7, 3)\":\"Shrub\",\"(7, 5)\":\"Shrub\",\"(7, 6)\":\"Chicken\",\"(8, 0)\":\"Tsunami\",\"(8, 1)\":\"Shark\"},\"sand\":{\"(2, 3)\":\"Sand\",\"(2, 4)\":\"Sand\",\"(2, 5)\":\"Sand\",\"(3, 2)\":\"Sand\",\"(3, 3)\":\"Sand\",\"(3, 4)\":\"Sand\",\"(3, 5)\":\"Sand\",\"(3, 6)\":\"Sand\",\"(4, 1)\":\"Sand\",\"(4, 2)\":\"Sand\",\"(4, 3)\":\"Sand\",\"(4, 4)\":\"Sand\",\"(4, 5)\":\"Sand\",\"(4, 6)\":\"Sand\",\"(4, 7)\":\"Sand\",\"(5, 1)\":\"Sand\",\"(5, 2)\":\"Sand\",\"(5, 3)\":\"Sand\",\"(5, 4)\":\"Sand\",\"(5, 5)\":\"Sand\",\"(5, 6)\":\"Sand\",\"(5, 7)\":\"Sand\",\"(6, 2)\":\"Sand\",\"(6, 3)\":\"Sand\",\"(6, 4)\":\"Sand\",\"(6, 5)\":\"Sand\",\"(6, 6)\":\"Sand\",\"(7, 3)\":\"Sand\",\"(7, 4)\":\"Sand\",\"(7, 5)\":\"Sand\",\"(7, 6)\":\"Sand\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(10, 6)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(12, 5)\":\"\",\"(12, 7)\":\"\",\"(13, 5)\":\"\",\"(13, 7)\":\"\",\"(14, 5)\":\"\",\"(14, 6)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(15, 6)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"}}", "{\"land\":{\"(1, 2)\":\"Land\",\"(2, 2)\":\"Land\",\"(4, 3)\":\"Land\",\"(4, 4)\":\"Land\",\"(6, 2)\":\"Land\",\"(7, 5)\":\"Land\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"},\"marsh\":{\"(8, 7)\":\"Marsh\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"},\"objects\":{\"(0, 6)\":\"Tsunami\",\"(1, 2)\":\"Chicken\",\"(1, 6)\":\"Waves\",\"(1, 7)\":\"Sunken Ship\",\"(2, 0)\":\"Waves\",\"(2, 2)\":\"Tree\",\"(2, 3)\":\"Shrub\",\"(2, 6)\":\"Shark\",\"(2, 7)\":\"Tsunami\",\"(3, 1)\":\"Shark\",\"(3, 3)\":\"Coral\",\"(3, 4)\":\"Shrub\",\"(3, 7)\":\"Waves\",\"(4, 0)\":\"Tsunami\",\"(4, 4)\":\"Chicken\",\"(4, 8)\":\"Tsunami\",\"(5, 2)\":\"Coral\",\"(5, 3)\":\"Coral\",\"(5, 6)\":\"Waves\",\"(6, 0)\":\"Waves\",\"(6, 1)\":\"Chicken\",\"(6, 2)\":\"Tree\",\"(7, 1)\":\"Shrub\",\"(7, 5)\":\"Chicken\",\"(7, 6)\":\"Wolf\",\"(8, 4)\":\"Waves\",\"(8, 5)\":\"Shark\"},\"sand\":{\"(1, 2)\":\"Sand\",\"(2, 2)\":\"Sand\",\"(2, 3)\":\"Sand\",\"(3, 4)\":\"Sand\",\"(4, 3)\":\"Sand\",\"(4, 4)\":\"Sand\",\"(4, 5)\":\"Sand\",\"(6, 1)\":\"Sand\",\"(6, 2)\":\"Sand\",\"(7, 1)\":\"Sand\",\"(7, 5)\":\"Sand\",\"(7, 6)\":\"Sand\",\"(9, 4)\":\"\",\"(10, 4)\":\"\",\"(10, 6)\":\"\",\"(11, 5)\":\"\",\"(11, 6)\":\"\",\"(11, 7)\":\"\",\"(12, 4)\":\"\",\"(12, 5)\":\"\",\"(12, 7)\":\"\",\"(13, 5)\":\"\",\"(13, 7)\":\"\",\"(14, 5)\":\"\",\"(14, 6)\":\"\",\"(15, 2)\":\"\",\"(15, 5)\":\"\",\"(15, 6)\":\"\",\"(16, 2)\":\"\",\"(16, 3)\":\"\",\"(16, 4)\":\"\",\"(18, 3)\":\"\",\"(18, 4)\":\"\",\"(19, 3)\":\"\",\"(20, 3)\":\"\",\"(20, 4)\":\"\"}}" ]
+map = NodePath("../CanvasLayer/margin/game_box/viewport/world")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="background" type="TextureRect" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 30 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="margin" type="Control" parent="CanvasLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 17.0
+margin_top = 17.0
+margin_right = -23.0
+margin_bottom = -23.0
+grow_horizontal = 2
+mouse_filter = 2
+size_flags_vertical = 5
+script = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="game_box" type="ViewportContainer" parent="CanvasLayer/margin"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+rect_min_size = Vector2( 500, 0 )
+mouse_filter = 2
+size_flags_horizontal = 8
+stretch = true
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="viewport" type="Viewport" parent="CanvasLayer/margin/game_box"]
+size = Vector2( 500, 660 )
+handle_input_locally = false
+render_target_update_mode = 3
+script = ExtResource( 7 )
+
+[node name="world" parent="CanvasLayer/margin/game_box/viewport" instance=ExtResource( 8 )]
+scale = Vector2( 1.014, 1.014 )
+
+[node name="info_box" type="Control" parent="CanvasLayer/margin"]
+anchor_bottom = 1.0
+margin_top = 1.58667
+margin_right = 400.0
+margin_bottom = -0.000305176
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+other = NodePath("../../../../game_master/CanvasLayer/margin/game_box")
+
+[node name="main_menu" type="Panel" parent="CanvasLayer/margin/info_box"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="container" type="VBoxContainer" parent="CanvasLayer/margin/info_box/main_menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="CanvasLayer/margin/info_box/main_menu/container"]
+self_modulate = Color( 0.117647, 0.486275, 0.858824, 1 )
+margin_right = 400.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 11 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Dinosaurs"
+align = 1
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title2" type="Label" parent="CanvasLayer/margin/info_box/main_menu/container/title"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 50.0
+margin_bottom = 50.0
+rect_rotation = -10.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color = Color( 0.413, 0.65695, 0.7, 1 )
+text = "with Chickens!"
+align = 2
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="credit" type="Button" parent="CanvasLayer/margin/info_box/main_menu/container"]
+margin_left = 156.0
+margin_top = 247.0
+margin_right = 244.0
+margin_bottom = 311.0
+rect_min_size = Vector2( 64, 64 )
+focus_mode = 0
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color_disabled = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color_hover = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color_pressed = Color( 1, 0.92549, 0.45098, 1 )
+text = "Credit"
+script = ExtResource( 29 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+target = NodePath("../../../credit")
+
+[node name="locale" type="Button" parent="CanvasLayer/margin/info_box/main_menu/container"]
+visible = false
+margin_left = 156.0
+margin_top = 373.0
+margin_right = 244.0
+margin_bottom = 437.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_horizontal = 4
+size_flags_vertical = 6
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
+custom_fonts/font = ExtResource( 13 )
+custom_colors/font_color_disabled = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color_hover = Color( 1, 0.92549, 0.45098, 1 )
+custom_colors/font_color_pressed = Color( 1, 0.92549, 0.45098, 1 )
+text = "Credit"
+script = ExtResource( 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="choices" type="HBoxContainer" parent="CanvasLayer/margin/info_box/main_menu/container"]
+margin_top = 408.0
+margin_right = 400.0
+margin_bottom = 658.0
+size_flags_vertical = 3
+custom_constants/separation = 20
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button" parent="CanvasLayer/margin/info_box/main_menu/container/choices" instance=ExtResource( 10 )]
+margin_right = 190.0
+margin_bottom = 250.0
+label = "Daily    Game"
+color = Color( 0.407843, 0.866667, 0.117647, 1 )
+
+[node name="button2" parent="CanvasLayer/margin/info_box/main_menu/container/choices" instance=ExtResource( 10 )]
+margin_left = 210.0
+margin_bottom = 250.0
+label = "Random Game"
+color = Color( 1, 0.92549, 0.45098, 1 )
+
+[node name="game_choices" type="VBoxContainer" parent="CanvasLayer/margin/info_box"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="description" parent="CanvasLayer/margin/info_box/game_choices" instance=ExtResource( 12 )]
+margin_bottom = 198.0
+mouse_filter = 2
+
+[node name="choice_list" type="GridContainer" parent="CanvasLayer/margin/info_box/game_choices"]
+margin_top = 218.0
+margin_right = 400.0
+margin_bottom = 658.0
+size_flags_vertical = 3
+custom_constants/vseparation = 30
+columns = 3
+script = ExtResource( 24 )
+
+[node name="choice" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_right = 130.0
+
+[node name="choice2" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 134.0
+margin_right = 264.0
+
+[node name="choice3" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 268.0
+margin_right = 398.0
+
+[node name="choice4" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_top = 94.0
+margin_right = 130.0
+margin_bottom = 158.0
+
+[node name="choice5" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 134.0
+margin_top = 94.0
+margin_right = 264.0
+margin_bottom = 158.0
+
+[node name="choice6" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 268.0
+margin_top = 94.0
+margin_right = 398.0
+margin_bottom = 158.0
+
+[node name="choice7" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_top = 188.0
+margin_right = 130.0
+margin_bottom = 252.0
+
+[node name="choice8" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 134.0
+margin_top = 188.0
+margin_right = 264.0
+margin_bottom = 252.0
+
+[node name="choice9" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 268.0
+margin_top = 188.0
+margin_right = 398.0
+margin_bottom = 252.0
+
+[node name="choice10" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_top = 282.0
+margin_right = 130.0
+margin_bottom = 346.0
+
+[node name="choice11" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 134.0
+margin_top = 282.0
+margin_right = 264.0
+margin_bottom = 346.0
+
+[node name="choice12" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 268.0
+margin_top = 282.0
+margin_right = 398.0
+margin_bottom = 346.0
+
+[node name="choice13" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_top = 376.0
+margin_right = 130.0
+margin_bottom = 440.0
+
+[node name="choice14" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 134.0
+margin_top = 376.0
+margin_right = 264.0
+margin_bottom = 440.0
+
+[node name="choice15" parent="CanvasLayer/margin/info_box/game_choices/choice_list" instance=ExtResource( 22 )]
+margin_left = 268.0
+margin_top = 376.0
+margin_right = 398.0
+margin_bottom = 440.0
+
+[node name="game_over" type="Panel" parent="CanvasLayer/margin/info_box"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="margin" type="Control" parent="CanvasLayer/margin/info_box/game_over"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scroll" type="ScrollContainer" parent="CanvasLayer/margin/info_box/game_over/margin"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -92.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="object_list" type="GridContainer" parent="CanvasLayer/margin/info_box/game_over/margin/scroll"]
+margin_right = 360.0
+size_flags_horizontal = 3
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bottom" type="HBoxContainer" parent="CanvasLayer/margin/info_box/game_over/margin"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -82.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="grand_total" type="Label" parent="CanvasLayer/margin/info_box/game_over/margin/bottom"]
+margin_right = 178.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 17 )
+text = "100"
+align = 1
+valign = 1
+
+[node name="next" type="Button" parent="CanvasLayer/margin/info_box/game_over/margin/bottom"]
+show_behind_parent = true
+margin_left = 182.0
+margin_right = 360.0
+margin_bottom = 82.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 17 )
+text = "Next"
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="credit" type="Panel" parent="CanvasLayer/margin/info_box"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="text" type="Label" parent="CanvasLayer/margin/info_box/credit"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+custom_fonts/font = ExtResource( 14 )
+text = "Illustration: Quan Dang Van
+Development: Quan Dang Van
+SFX: Quan Dang Van
+Music: Neopolitin by Guustavv"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="button" parent="CanvasLayer/margin/info_box/credit" instance=ExtResource( 28 )]
+
+[node name="message" type="VBoxContainer" parent="CanvasLayer/margin/info_box"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="CanvasLayer/margin/info_box/message"]
+self_modulate = Color( 0.192157, 0.529412, 0.87451, 1 )
+margin_top = 211.0
+margin_right = 406.0
+margin_bottom = 361.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 11 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Stay Safe!"
+
+[node name="close" parent="CanvasLayer/margin/info_box/message" instance=ExtResource( 28 )]
+modulate = Color( 1, 0.92549, 0.45098, 1 )
+anchor_left = 0.0
+anchor_right = 0.0
+margin_left = 163.0
+margin_top = 365.0
+margin_right = 242.0
+margin_bottom = 447.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 23 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "OK!"
+
+[node name="focus" type="Panel" parent="CanvasLayer"]
+visible = false
+margin_right = 191.0
+margin_bottom = 40.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 5 )
+script = ExtResource( 31 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+center = NodePath("../center")
+
+[node name="message1" type="Label" parent="CanvasLayer/focus"]
+visible = false
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -105.5
+margin_right = 105.5
+custom_fonts/font = ExtResource( 13 )
+text = "Choose an object"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="message2" type="Label" parent="CanvasLayer/focus"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -105.5
+margin_right = 105.5
+margin_bottom = -5.0
+grow_vertical = 0
+custom_fonts/font = ExtResource( 13 )
+text = "Choose an object"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="message3" type="Label" parent="CanvasLayer/focus"]
+visible = false
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 10.0
+margin_top = -24.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 13 )
+text = "Choose an object"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="message4" type="Label" parent="CanvasLayer/focus"]
+visible = false
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -24.0
+margin_right = -10.0
+margin_bottom = 24.0
+grow_horizontal = 0
+custom_fonts/font = ExtResource( 13 )
+text = "Choose an object"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="center" type="Control" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="font_scaler" type="Node" parent="."]
+script = ExtResource( 3 )
+scaled_font = [ ExtResource( 14 ), ExtResource( 15 ), ExtResource( 13 ), ExtResource( 23 ), ExtResource( 17 ), ExtResource( 11 ) ]
+
+[node name="sfx" type="AudioStreamPlayer" parent="."]
+volume_db = 5.0
+
+[node name="background" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 16 )
+volume_db = -20.0
+autoplay = true
+[connection signal="pressed" from="CanvasLayer/margin/info_box/main_menu/container/choices/button" to="." method="daily_game"]
+[connection signal="pressed" from="CanvasLayer/margin/info_box/main_menu/container/choices/button2" to="." method="random_game"]
+
+[editable path="CanvasLayer/margin/info_box/game_choices/description"]
+
+[editable path="CanvasLayer/margin/info_box/game_choices/choice_list/choice"]
