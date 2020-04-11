@@ -30,7 +30,7 @@
 [ext_resource path="res://scenes/simple_button.tscn" type="PackedScene" id=28]
 [ext_resource path="res://open_button.gd" type="Script" id=29]
 [ext_resource path="res://arts/background.svg" type="Texture" id=30]
-[ext_resource path="res://scenes/focus.gd" type="Script" id=31]
+[ext_resource path="res://focus.gd" type="Script" id=31]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -114,7 +114,6 @@ cell_types = [ "Hungry Dino", "Shark", "Coral", "Field", "Lonely Dino", "Mountai
 cell_conditions = [ [ "meat", "skull" ], [ "waves" ], [ "no_waves", "heart" ], [ "land", "uncrowded" ], [ "plant", "green_shield" ], [ "crowded", "invincible" ], [ "sand" ], [ "plant", "skull" ], [ "land", "crowded" ], [ "invincible" ], [ "plant" ], [ "meat", "heart" ], [ "invincible" ], [ "no_sand", "green_heart" ], [ "waves", "bloody_heart" ], [ "crowded", "bloody_heart" ] ]
 choice_steps = [ [ "Coral", "Field", "Mountain", "Tree", "Shrub", "Marsh" ], [ "Hungry Dino", "Social Dino", "Lonely Dino", "Shark", "Wolf", "Chicken" ], [ "Sunken Ship", "Forgotten Temple" ] ]
 object_count = [ 15, 7, 3 ]
-sea_cells = [ "Shark", "Coral", "Ship", "Tsunami", "Waves", "Sunken Ship" ]
 plants = [ "Tree", "Shrub", "Field" ]
 animals = [ "Hungry Dino", "Lonely Dino", "Social Dino", "Sheep", "Wolf", "Shark" ]
 structures = [ "Mountain", "Coral" ]

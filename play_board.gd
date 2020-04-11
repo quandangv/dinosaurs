@@ -132,7 +132,6 @@ func gather_prefs(tile_name):
 	return [base_rate, result]
 
 func generate_submap(map_coord):
-	yield(get_tree(), "idle_frame")
 	var map_size = submap_size
 	var base_layer = null
 	for pair in terrain_layers:
@@ -445,7 +444,7 @@ func check_points(coord, object_name, is_preview):
 					_add_point(result, cell, point_added)
 	if conditions.find("skull") != -1:
 		result[coord] = result.get(coord, 0)*2
-	var is_ocean = game_master.sea_cells.find(object_name) != -1
+	var is_ocean = tile_categories["marine"].find(object_name) != -1
 	if is_ocean != (get_env(coord) == "Ocean"):
 		_add_point(result, coord, -10)
 	return result

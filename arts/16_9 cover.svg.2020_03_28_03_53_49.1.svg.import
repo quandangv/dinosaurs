@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/16:9 cover.svg.2020_03_28_03_53_49.1.svg-003633b799bca2de585511ae3107afc7.stex"
+path="res://.import/16_9 cover.svg.2020_03_28_03_53_49.1.svg-43f3c70558be32ec200b6c6cf48e8c8f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arts/16:9 cover.svg.2020_03_28_03_53_49.1.svg"
-dest_files=[ "res://.import/16:9 cover.svg.2020_03_28_03_53_49.1.svg-003633b799bca2de585511ae3107afc7.stex" ]
+source_file="res://arts/16_9 cover.svg.2020_03_28_03_53_49.1.svg"
+dest_files=[ "res://.import/16_9 cover.svg.2020_03_28_03_53_49.1.svg-43f3c70558be32ec200b6c6cf48e8c8f.stex" ]
 
 [params]
 

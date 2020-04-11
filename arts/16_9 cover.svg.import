@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/16:9 cover.svg-b89cd46242efcc43095398326831eed6.stex"
+path="res://.import/16_9 cover.svg-dba09f642045b19fded5db31f7df65c0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://arts/16:9 cover.svg"
-dest_files=[ "res://.import/16:9 cover.svg-b89cd46242efcc43095398326831eed6.stex" ]
+source_file="res://arts/16_9 cover.svg"
+dest_files=[ "res://.import/16_9 cover.svg-dba09f642045b19fded5db31f7df65c0.stex" ]
 
 [params]
 

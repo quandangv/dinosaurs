@@ -66,7 +66,7 @@ func set_bubble(choice_bubble, cell_index):
 	var name = cell_types[cell_index]
 	var description = tr(name+" text")
 	var conditions = cell_conditions[cell_index]
-	var color = sea_color if tilemap.sea_cells.find(name) != -1 else sand_color if name == "Sand" else land_color
+	var color = sea_color if tilemap.tile_categories["marine"].find(name) != -1 else sand_color if name == "Sand" else land_color
 	choice_bubble.setup(name, description, object_categories.get(name, "object"), conditions, color)
 
 func set_bubble_random(choice_bubble, names):
