@@ -20,9 +20,11 @@ export var land_color:Color
 export var sand_color:Color
 export var wave_ratio = 0.07
 export var land_ratio = 0.55
+export var full_points:float = 4
 
 export(Array, String) var cell_types
 export(Array, Array, String) var cell_conditions
+export(Array, Array, String) var transformations
 export(Array, Array, String) var choice_steps
 export(Array, int) var object_count
 export(Array, String) var plants
@@ -57,7 +59,7 @@ func save_settings():
 
 func get_conditions(cell_type):
 	var cell_id = cell_types.find(cell_type)
-	assert(cell_id != -1)
+	me.assrt(cell_id != -1, "trying to find conditions of an unknown cell")
 	return cell_conditions[cell_id]
 
 # choice_bubble parameters:
@@ -96,6 +98,7 @@ func _ready():
 	game_over.get_node("margin/bottom/next").connect("pressed", self, "game_next")
 	message.get_node("close").connect("pressed", self, "game_next")
 	tilemap.connect("pressed", self, "game_next")
+	tilemap.connect("hovered", self, "show_stats")
 	for category in object_categories.keys():
 		var array = object_categories[category]
 		object_categories.erase(category)
@@ -212,3 +215,87 @@ func random_game():
 
 func cancel_placement():
 	game_next("skip")
+
+func show_stats(coord, name):
+	if name != null:
+		var points = check_points(coord, name)
+		for i in points.size():
+			points[i] /= full_points
+		descriptions.get_parent().show_lvl_up_stats(points)
+
+
+
+
+func _add_point(dict, key, point):
+	dict[key] = dict.get(key,0)+point
+func check_points(coord, object_name):
+	var points = []
+	var game_master = get_node("/root/game_master")
+	var near_map = {}
+	for cell in me.near_vectors:
+		cell += coord
+		near_map[cell] = tilemap.get_tilemap_cell(cell)
+	var conditions = game_master.get_conditions(me.check_null(object_name, "trying to check a cell with null object name"))
+	for cond in conditions:
+		var point = 0
+		var map = {}
+		match cond:
+			"land", "sand":
+				map[coord] = tilemap.get_env(coord)
+			"no_sand":
+				for cell in me.near_vectors_env:
+					cell += coord
+					map[cell] = tilemap.get_env(cell)
+			_:
+				map = near_map
+		for cell in map.keys():
+			match cond:
+				"land":
+					if map[cell] == 'Land':
+						point +=1
+				"sand", "no_sand":
+					if map[cell] == 'Sand':
+						point +=1 if cond == "sand" else -1
+				"waves", "no_waves":
+					if tilemap.cell_category["waves"].find(map[cell]) != -1:
+						point +=1 if cond == "waves" else -1
+				"meat":
+					if tilemap.cell_category["animal"].find(map[cell]) != -1:
+						point +=1
+				"plant":
+					if tilemap.cell_category["plant"].find(map[cell]) != -1:
+						point +=1
+				"crowded", "uncrowded":
+					if tilemap.cell_category["crowding"].find(map[cell]) != -1:
+						point +=1 if cond == "crowded" else -1
+		match cond:
+			"no_waves", "uncrowded", "no_sand":
+					point += 2
+		points.push_back(point)
+	if conditions.find("invincible") == -1:
+		for cell in near_map.keys():
+			if near_map[cell] != null:
+				var conditions2 = game_master.get_conditions(near_map[cell])
+				for cond in conditions2:
+					var point_added = 0
+					match cond:
+						"heart":
+							point_added = 1
+						"skull":
+							point_added = -1
+						"green_heart":
+							if tilemap.cell_category["plant"].find(object_name) != -1:
+								point_added = 1
+						"bloody_heart":
+							if tilemap.cell_category["beast"].find(object_name) != -1:
+								point_added = 1
+						"guardian":
+							point_added = -1 if conditions.find("skull") != -1 else 1
+					for i in points.size():
+						points[i] += point_added
+	
+	var is_ocean = tilemap.tile_categories["marine"].find(object_name) != -1
+	if is_ocean != (tilemap.get_env(coord) == "Ocean"):
+		for i in points.size():
+			points[i] += -10
+	return points

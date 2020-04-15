@@ -1,6 +1,7 @@
 extends Node2D
 
 signal pressed
+signal hovered
 
 var selected_cell_type
 var selected_choice
@@ -16,12 +17,6 @@ export(Array, String) var cell_types = [
 	"Shrub", "Social Dino", "Tree", "Waves", "Chicken", "Wolf", "Tsunami",
 	"Marsh", "Sunken Ship", "Forgotten Temple"
 ]
-
-var near_vectors = [Vector2(-1,-1), Vector2(0,-1), Vector2(1,-1), Vector2(-1,0), Vector2(1,0), Vector2(-1,1), Vector2(0,1), Vector2(1,1)]
-var near_vectors_env = [Vector2.ZERO, Vector2(-1,-1), Vector2(0,-1), Vector2(1,-1), Vector2(-1,0), Vector2(1,0), Vector2(-1,1), Vector2(0,1), Vector2(1,1)]
-var strict_near_vectors = [ Vector2(0,-1), Vector2(-1,0), Vector2(1,0), Vector2(0,1)]
-var strict_near_vectors_env = [ Vector2(0,-1), Vector2(-1,0), Vector2(1,0), Vector2(0,1), Vector2.ZERO]
-var corner_vectors = [Vector2(-1, -1), Vector2(-1, 1), Vector2(1, 1), Vector2(1, -1), ]
 
 onready var object_tileset = $objects.tile_set
 var atlas_tile_total = {}
@@ -264,31 +259,6 @@ func clear_ghosts():
 	$overlay.clear()
 	$enclosure.clear()
 
-# visualize the effects of the object at a coordinate on other cell
-# as well as the cells that have effects on the coordinate
-func display_cell_detail(coord, object_name):
-	var marked_cells = {}
-	var tile_id = object_tileset.find_tile_by_name(object_name)
-	for cell in $objects.get_used_cells():
-		var cell_name = me.get_tile_name($objects, cell)
-		var old_tile_id = $objects.get_cellv(coord)
-		var is_flipped = $objects.is_cell_x_flipped(coord.x, coord.y)
-		var other_effects = check_points(cell, cell_name, true)
-		$objects.set_cellv(coord, tile_id)
-		var other_effect_after = check_points(cell, cell_name, true)
-		$objects.set_cellv(coord, old_tile_id, is_flipped)
-		var difference = other_effect_after.get(coord, 0) - other_effects.get(coord, 0)
-		if difference != 0:
-			marked_cells[cell] = "up" if difference > 0 else "down"
-	var effects = check_points(coord, object_name, true)
-	for coord2 in effects.keys():
-		var points = effects[coord2]
-		if points != 0:
-			marked_cells[coord2] = marked_cells.get(coord2, "") + ("positive" if points > 0 else "negative")
-	for cell in marked_cells.keys():
-		$overlay.set_cellv(cell, $overlay.tile_set.find_tile_by_name(marked_cells[cell]))
-	return check_points(coord, object_name, false)
-
 # get the list of occupied cells
 func get_used_cell_names():
 	var result = {}
@@ -335,12 +305,6 @@ func _finalize_ghosts():
 		clear_ghosts()
 		return true
 
-func _put_ghost(coord, object_name):
-	if object_name != null:
-		$overlay.clear()
-		display_cell_detail(coord, object_name)
-		$objects_ghost.set_cellv(coord, me.get_preview_tile(object_name), current_flip_x)
-
 func _pressed():
 	if _finalize_ghosts():
 		selected_cell_type = null
@@ -360,91 +324,18 @@ func in_board(coord):
 	return Rect2(0,0,map_size,map_size).has_point(coord)
 
 func _process(delta):
-	if !game_over:
-		clear_ghosts()
+	if !game_over and selected_cell_type != null:
 		var coord = $objects.world_to_map($objects.get_local_mouse_position())
 		if in_board(coord):
-			if $objects.get_cell(coord.x, coord.y) == -1:
-				_put_ghost(coord, selected_cell_type)
+			emit_signal("hovered", coord, selected_cell_type)
+			$objects_ghost.clear()
+			$objects_ghost.set_cellv(coord, me.get_preview_tile(selected_cell_type))
 
 func focus(coord):
 	$enclosure.clear()
 	$enclosure.set_cellv(coord, enclosure_tile)
 
-func get_tilemap_cell(tilemap, coord):
+func get_tilemap_cell(coord):
 	var cell = $objects.get_cellv(coord)
 	if cell != -1:
-		return object_tileset.tile_get_name(cell)
-
-func _add_point(dict, key, point):
-	dict[key] = dict.get(key,0)+point
-# check for all cells that effect the point of the current cell
-func check_points(coord, object_name, is_preview):
-	var result = {}
-	var game_master = get_node("/root/game_master")
-	var near_map = {}
-	for cell in near_vectors:
-		cell += coord
-		near_map[cell] = get_tilemap_cell($objects, cell)
-	var conditions = game_master.get_conditions(object_name)
-	for cond in conditions:
-		var map = {}
-		match cond:
-			"land", "sand":
-				map[coord] = get_env(coord)
-			"no_sand":
-				for cell in near_vectors_env:
-					cell += coord
-					map[cell] = get_env(cell)
-			_:
-				map = near_map
-		for cell in map.keys():
-			match cond:
-				"land":
-					if map[cell] == 'Land':
-						_add_point(result, cell, 1)
-				"sand", "no_sand":
-					if map[cell] == 'Sand':
-						_add_point(result, cell, 1 if cond == "sand" else -1)
-				"waves", "no_waves":
-					if cell_category["waves"].find(map[cell]) != -1:
-						_add_point(result, cell, 1 if cond == "waves" else -1)
-				"meat":
-					if cell_category["animal"].find(map[cell]) != -1:
-						_add_point(result, cell, 1)
-				"plant":
-					if cell_category["plant"].find(map[cell]) != -1:
-						_add_point(result, cell, 1)
-				"crowded", "uncrowded":
-					if cell_category["crowding"].find(map[cell]) != -1:
-						_add_point(result, cell, 1 if cond == "crowded" else -1)
-		if !is_preview:
-			match cond:
-				"no_waves", "uncrowded", "no_sand":
-					_add_point(result, coord, 2)
-	if conditions.find("invincible") == -1:
-		for cell in near_map.keys():
-			if near_map[cell] != null:
-				var conditions2 = game_master.get_conditions(near_map[cell])
-				for cond in conditions2:
-					var point_added = 0
-					match cond:
-						"heart":
-							point_added = 1
-						"skull":
-							point_added = -1
-						"green_heart":
-							if cell_category["plant"].find(object_name) != -1:
-								point_added = 1
-						"bloody_heart":
-							if cell_category["beast"].find(object_name) != -1:
-								point_added = 1
-						"guardian":
-							point_added = -1 if conditions.find("skull") != -1 else 1
-					_add_point(result, cell, point_added)
-	if conditions.find("skull") != -1:
-		result[coord] = result.get(coord, 0)*2
-	var is_ocean = tile_categories["marine"].find(object_name) != -1
-	if is_ocean != (get_env(coord) == "Ocean"):
-		_add_point(result, coord, -10)
-	return result
+		return me.object_tileset.tile_get_name(cell)

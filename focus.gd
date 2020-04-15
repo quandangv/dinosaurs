@@ -22,7 +22,7 @@ func choose_message():
 
 func focus(target:Control, message):
 	yield(get_tree(), "idle_frame")
-	rect_global_position = target.rect_global_position
+	rect_global_position = me.check_null(target, "the focus target cannot be null").rect_global_position
 	rect_size = target.rect_size
 	message_node = choose_message()
 	message_node.text = message

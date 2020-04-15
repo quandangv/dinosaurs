@@ -117,7 +117,7 @@ object_count = [ 15, 7, 3 ]
 plants = [ "Tree", "Shrub", "Field" ]
 animals = [ "Hungry Dino", "Lonely Dino", "Social Dino", "Sheep", "Wolf", "Shark" ]
 structures = [ "Mountain", "Coral" ]
-instructions_focus = [ NodePath("CanvasLayer/margin/info_box/game_choices/choice_list/choice/minimized"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/title/conditions"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/stat"), NodePath("CanvasLayer/margin/game_box") ]
+instructions_focus = [ NodePath("CanvasLayer/margin/info_box/game_choices/choice_list/choice/minimized"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/details/lvl_up_options/icon"), NodePath("CanvasLayer/margin/info_box/game_choices/description/bubble/margin/texts/details/stat"), NodePath("CanvasLayer/margin/game_box") ]
 instructions_message = [ "Choose an object", "Select a condition", "View the condition", "Put the object" ]
 
 [node name="wiggles" type="Timer" parent="."]

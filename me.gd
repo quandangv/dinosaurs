@@ -21,3 +21,12 @@ func get_preview_tile(cell_name):
 
 func get_tile_name(tilemap:TileMap, coord:Vector2):
 	return tilemap.tile_set.tile_get_name(tilemap.get_cellv(coord))
+
+func assrt(value, message):
+	if !value:
+		printerr(message)
+		assert(value)
+
+func check_null(value, message):
+	assrt(value != null, message)
+	return value

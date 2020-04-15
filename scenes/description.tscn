@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://tiles/object tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://cell_description.gd" type="Script" id=2]
@@ -66,6 +66,24 @@ corner_radius_bottom_left = 20
 
 [sub_resource type="AtlasTexture" id=8]
 
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 2, 2, 2, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.811765, 0.811765, 0.811765, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
 [node name="choice" type="Control"]
 margin_right = 400.0
 margin_bottom = 288.0
@@ -74,8 +92,8 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-condition_names = [ "sand", "no_sand", "waves", "no_waves", "heart", "invincible", "land", "meat", "no_sand", "no_waves", "plant", "uncrowded", "sand", "skull", "waves" ]
 tileset = ExtResource( 1 )
+lvl_up_stat = NodePath("bubble/margin/texts/details/lvl_up_stat")
 
 [node name="prompt" type="Label" parent="."]
 anchor_right = 1.0
@@ -119,28 +137,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="cell_display" type="TileMap" parent="bubble/margin"]
-scale = Vector2( 0.25, 0.25 )
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 256, 256 )
-format = 1
-__meta__ = {
-"_editor_description_": ""
-}
-
 [node name="texts" type="VBoxContainer" parent="bubble/margin"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_right = -10.0
 mouse_filter = 2
+size_flags_horizontal = 3
 custom_constants/separation = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="title" type="HBoxContainer" parent="bubble/margin/texts"]
-margin_right = 360.0
+margin_right = 380.0
 margin_bottom = 60.0
 mouse_filter = 2
 custom_constants/separation = 20
@@ -160,7 +168,7 @@ script = ExtResource( 10 )
 
 [node name="name" type="Label" parent="bubble/margin/texts/title"]
 margin_left = 70.0
-margin_right = 220.0
+margin_right = 380.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 0, 60 )
 size_flags_horizontal = 3
@@ -169,64 +177,11 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Tree"
 valign = 1
 
-[node name="conditions" type="HBoxContainer" parent="bubble/margin/texts/title"]
-margin_left = 240.0
-margin_right = 360.0
-margin_bottom = 60.0
-custom_constants/separation = 0
-
-[node name="icon" type="TextureRect" parent="bubble/margin/texts/title/conditions"]
-margin_top = 10.0
-margin_right = 40.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 40, 40 )
-size_flags_vertical = 4
-texture = SubResource( 6 )
-expand = true
-stretch_mode = 6
-
-[node name="ScreenScaler" type="Node" parent="bubble/margin/texts/title/conditions/icon"]
-script = ExtResource( 10 )
-
-[node name="icon2" type="TextureRect" parent="bubble/margin/texts/title/conditions"]
-margin_left = 40.0
-margin_top = 10.0
-margin_right = 80.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 40, 40 )
-size_flags_vertical = 4
-texture = SubResource( 7 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ScreenScaler2" type="Node" parent="bubble/margin/texts/title/conditions/icon2"]
-script = ExtResource( 10 )
-
-[node name="icon3" type="TextureRect" parent="bubble/margin/texts/title/conditions"]
-margin_left = 80.0
-margin_top = 10.0
-margin_right = 120.0
-margin_bottom = 50.0
-rect_min_size = Vector2( 40, 40 )
-size_flags_vertical = 4
-texture = SubResource( 8 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ScreenScaler3" type="Node" parent="bubble/margin/texts/title/conditions/icon3"]
-script = ExtResource( 10 )
-
 [node name="content" type="Label" parent="bubble/margin/texts"]
 modulate = Color( 0.407843, 0.866667, 0.117647, 1 )
 margin_top = 65.0
-margin_right = 360.0
-margin_bottom = 138.0
+margin_right = 380.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
 custom_fonts/font = ExtResource( 7 )
@@ -234,15 +189,144 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "The tree likes to be touching more trees"
 autowrap = true
 
-[node name="stat" type="Label" parent="bubble/margin/texts"]
-margin_top = 143.0
-margin_right = 360.0
-margin_bottom = 175.0
+[node name="details" type="HBoxContainer" parent="bubble/margin/texts"]
+margin_top = 105.0
+margin_right = 380.0
+margin_bottom = 268.0
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="lvl_up_options" type="VBoxContainer" parent="bubble/margin/texts/details"]
+margin_top = 17.0
+margin_right = 40.0
+margin_bottom = 145.0
+rect_min_size = Vector2( 40, 0 )
+size_flags_vertical = 6
+
+[node name="icon" type="TextureRect" parent="bubble/margin/texts/details/lvl_up_options"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+texture = SubResource( 6 )
+expand = true
+stretch_mode = 6
+
+[node name="ScreenScaler" type="Node" parent="bubble/margin/texts/details/lvl_up_options/icon"]
+script = ExtResource( 10 )
+
+[node name="icon2" type="TextureRect" parent="bubble/margin/texts/details/lvl_up_options"]
+margin_top = 44.0
+margin_right = 40.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 40, 40 )
+texture = SubResource( 7 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScreenScaler2" type="Node" parent="bubble/margin/texts/details/lvl_up_options/icon2"]
+script = ExtResource( 10 )
+
+[node name="icon3" type="TextureRect" parent="bubble/margin/texts/details/lvl_up_options"]
+margin_top = 88.0
+margin_right = 40.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 40, 40 )
+texture = SubResource( 8 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScreenScaler3" type="Node" parent="bubble/margin/texts/details/lvl_up_options/icon3"]
+script = ExtResource( 10 )
+
+[node name="lvl_up_stat" type="VBoxContainer" parent="bubble/margin/texts/details"]
+visible = false
+margin_left = 50.0
+margin_top = 17.0
+margin_right = 210.0
+margin_bottom = 145.0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 6
+
+[node name="Control" type="Control" parent="bubble/margin/texts/details/lvl_up_stat"]
+margin_right = 160.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="value" type="ProgressBar" parent="bubble/margin/texts/details/lvl_up_stat/Control"]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.7
+margin_right = -10.0
+custom_styles/fg = SubResource( 9 )
+custom_styles/bg = SubResource( 10 )
+max_value = 1.0
+step = 0.0
+value = 0.6
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control2" type="Control" parent="bubble/margin/texts/details/lvl_up_stat"]
+margin_top = 44.0
+margin_right = 160.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="value" type="ProgressBar" parent="bubble/margin/texts/details/lvl_up_stat/Control2"]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.7
+margin_right = -10.0
+custom_styles/fg = SubResource( 9 )
+custom_styles/bg = SubResource( 10 )
+max_value = 1.0
+step = 0.0
+value = 0.6
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="Control3" type="Control" parent="bubble/margin/texts/details/lvl_up_stat"]
+margin_top = 88.0
+margin_right = 160.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 0, 40 )
+
+[node name="value" type="ProgressBar" parent="bubble/margin/texts/details/lvl_up_stat/Control3"]
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.7
+margin_right = -10.0
+custom_styles/fg = SubResource( 9 )
+custom_styles/bg = SubResource( 10 )
+max_value = 1.0
+step = 0.0
+value = 0.6
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="stat" type="Label" parent="bubble/margin/texts/details"]
+margin_left = 50.0
+margin_top = 48.0
+margin_right = 380.0
+margin_bottom = 115.0
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 6 )
 custom_colors/font_color = Color( 0.501961, 0.501961, 0.501961, 1 )
 text = "2pts for each tree in a group minus 2pts"
 autowrap = true
 script = ExtResource( 9 )
-condition_box = NodePath("../title/conditions")
+condition_box = NodePath("../lvl_up_options")
+stat_box = NodePath("../lvl_up_stat")
