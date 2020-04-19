@@ -4,7 +4,7 @@ export var other: NodePath
 export var margin:float = 20
 
 func _ready():
-	get_viewport().connect("size_changed", self, "resized")
+	me.check_error(get_viewport().connect("size_changed", self, "resized"))
 	call_deferred("resized")
 
 func resized():

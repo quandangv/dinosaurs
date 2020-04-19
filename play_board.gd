@@ -18,9 +18,7 @@ export(Array, String) var cell_types = [
 	"Marsh", "Sunken Ship", "Forgotten Temple"
 ]
 
-onready var object_tileset = $objects.tile_set
 var atlas_tile_total = {}
-var placement = []
 
 var game_over
 var current_flip_x = true
@@ -61,7 +59,6 @@ var tile_categories = {
 
 func _ready():
 	$background.rect_size = map_size*$objects.cell_size*$objects.scale + margin_size
-	$background.connect("pressed", self, "_pressed")
 	selected_choice = null
 	export_map()
 	enclosure_tile = $enclosure.tile_set.find_tile_by_name("enclosure")
@@ -119,26 +116,26 @@ func calculate_rate(prefs, coord, mutiplier):
 func gather_prefs(tile_name):
 	var result = {}
 	assert(object_prefs.has(tile_name))
-	var base_rate = object_prefs[tile_name][0]
+	var base_rate2 = object_prefs[tile_name][0]
 	var presets = object_prefs[tile_name][1]
 	for preset in presets:
 		for pref in pref_presets[preset]:
 			result[pref[0]] = pref[1]
-	return [base_rate, result]
+	return [base_rate2, result]
 
 func generate_submap(map_coord):
-	var map_size = submap_size
+	var map_size2 = submap_size
 	var base_layer = null
 	for pair in terrain_layers:
-		$map_generator.generate_submap_layer(base_layer, pair[0], $map_generator.get_context(pair[0], map_coord, pair[1]), pair[1], map_size)
+		$map_generator.generate_submap_layer(base_layer, pair[0], $map_generator.get_context(pair[0], map_coord, pair[1]), pair[1], map_size2)
 		base_layer = pair[0]
-	
+
 	base_layer = terrain_layers[0][0]
 	var current_layer = blob_layer[0]
 	var current_tile = current_layer.tile_set.find_tile_by_name(blob_layer[1])
 	var presence = $map_generator.get_presence_multiplier(current_layer, map_coord, blob_layer[1])
 	current_layer.clear()
-	for cell in $map_generator.generate_blobs(blob_rates[blob_layer[1]]*presence, base_layer, map_size):
+	for cell in $map_generator.generate_blobs(blob_rates[blob_layer[1]]*presence, base_layer, map_size2):
 		current_layer.set_cellv(cell, current_tile)
 	current_layer.update_bitmask_region()
 	current_layer = get_node(object_layer)
@@ -147,8 +144,8 @@ func generate_submap(map_coord):
 	for tile_name in presence.keys():
 		current_tile = current_layer.tile_set.find_tile_by_name(tile_name)
 		var prefs = gather_prefs(tile_name)
-		for x in map_size:
-			for y in map_size:
+		for x in map_size2:
+			for y in map_size2:
 				var coord = Vector2(x,y)
 				object_prefs.has(tile_name)
 				if randf() < calculate_rate(prefs[1], coord, prefs[0] * presence[tile_name]):
@@ -164,23 +161,20 @@ func generate_islands(land_ratio, wave_ratio):
 	print(land_ratio*island_land_ratio)
 	for cell in $map_generator.generate_blobs(island_land_ratio, $sand, map_size):
 		set_env(cell, "Land")
-	
+
 	for i in map_size:
 		for j in map_size:
 			var cell = Vector2(i,j)
 			if get_env(cell) == "Ocean" and randf() < wave_ratio:
 				set_object(cell, "Waves"if randf()*(waves_preference) < waves_preference else "Tsunami")
 
-func clear_placement():
-	placement.clear()
-
 func get_random_subtile(tile_id):
 	# Calculate the size of the autotile in number of tiles instead of in pixels
 	# So that we can iterate the subtiles of the autotile
-	var region = object_tileset.tile_get_region(tile_id).size
-	var tile_size = object_tileset.autotile_get_size(tile_id)
+	var region = me.object_tileset.tile_get_region(tile_id).size
+	var tile_size = me.object_tileset.autotile_get_size(tile_id)
 	var subtile_size = Vector2(region.x/tile_size.x, region.y/tile_size.y)
-	
+
 	# if there is only 1 subtile, no randomization needed
 	if subtile_size == Vector2(1,1):
 		return Vector2.ZERO
@@ -190,7 +184,7 @@ func get_random_subtile(tile_id):
 		var total_priority = 0
 		for x in int(subtile_size.x):
 			for y in int(subtile_size.y):
-				total_priority += object_tileset.autotile_get_subtile_priority(tile_id, Vector2(x,y))
+				total_priority += me.object_tileset.autotile_get_subtile_priority(tile_id, Vector2(x,y))
 		atlas_tile_total[tile_id] = total_priority
 	# get a random value
 	var priority = randi() % atlas_tile_total[tile_id]
@@ -198,12 +192,12 @@ func get_random_subtile(tile_id):
 	for x in int(subtile_size.x):
 		for y in int(subtile_size.y):
 			var subtile = Vector2(x,y)
-			priority -= object_tileset.autotile_get_subtile_priority(tile_id, subtile)
+			priority -= me.object_tileset.autotile_get_subtile_priority(tile_id, subtile)
 			if priority < 0:
 				return subtile
 
-func set_object(coord, cell_type, current_flip_x = false):
-	var tile_id = object_tileset.find_tile_by_name(cell_type)
+func set_object(coord, cell_type):
+	var tile_id = me.object_tileset.find_tile_by_name(cell_type)
 	$objects.set_cell(coord.x, coord.y, tile_id, current_flip_x,
 		false,false,get_random_subtile(tile_id))
 	if cell_type == "Marsh":
@@ -253,18 +247,11 @@ func export_map():
 		"marsh":_export_map($marsh)
 	}))
 
-# clear all temporary tiles 
+# clear all temporary tiles
 func clear_ghosts():
 	$objects_ghost.clear()
 	$overlay.clear()
 	$enclosure.clear()
-
-# get the list of occupied cells
-func get_used_cell_names():
-	var result = {}
-	for coord in placement:
-		result[coord] = me.get_tile_name($objects, coord)
-	return result
 
 # get the environment of coord
 func get_env(coord):
@@ -296,21 +283,28 @@ func set_env(coord, env_name):
 		_:
 			assert(false)
 
-# turn all ghosts into real object
-func _finalize_ghosts():
-	for coord in $objects_ghost.get_used_cells():
-		set_object(coord, selected_cell_type, current_flip_x)
-		placement.push_back(coord)
-	if $objects_ghost.get_used_cells().size() != 0:
-		clear_ghosts()
-		return true
+var current_operation_linker
+func put_object
+func _put_object(data):
+	var object = preload("res://scenes/object.tscn").instance()
+	object.set_tile(data["object_id"])
+	object.modulate = Color(1,1,1,0.5)
+	while true:
+		yield(get_tree(),"idle_frame")
+		var coord = $objects.get_local_mouse_position()
+		if in_board(coord):
+			emit_signal("hovered", coord, data["object_id"])
+			object.position = coord
+			if Input.is_action_just_released("mouse_click"):
+				object.modulate = Color(1,1,1,1)
+				emit_signal("pressed")
 
-func _pressed():
-	if _finalize_ghosts():
-		selected_cell_type = null
-		$overlay.clear()
-		emit_signal("pressed", selected_choice)
-		current_flip_x = randi()%2 == 0
+#func _pressed():
+#	if _finalize_ghosts():
+#		selected_cell_type = null
+#		$overlay.clear()
+#		emit_signal("pressed", selected_choice)
+#		current_flip_x = randi()%2 == 0
 
 # clear all tiles
 func clear():
@@ -320,10 +314,11 @@ func clear():
 	$marsh.clear()
 	$enclosure.clear()
 
+var map_region = Rect2(0,0,map_size,map_size)
 func in_board(coord):
-	return Rect2(0,0,map_size,map_size).has_point(coord)
+	return map_region.has_point(coord)
 
-func _process(delta):
+func _process(_delta):
 	if !game_over and selected_cell_type != null:
 		var coord = $objects.world_to_map($objects.get_local_mouse_position())
 		if in_board(coord):
@@ -338,4 +333,4 @@ func focus(coord):
 func get_tilemap_cell(coord):
 	var cell = $objects.get_cellv(coord)
 	if cell != -1:
-		return me.object_tileset.tile_get_name(cell)
+		return me.me.object_tileset.tile_get_name(cell)

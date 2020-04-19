@@ -4,7 +4,7 @@ export var right_aligned = true
 var working
 
 func _ready():
-	connect("resized", self, "resized")
+	me.check_error(connect("resized", self, "resized"))
 	call_deferred("resized")
 
 func resized():

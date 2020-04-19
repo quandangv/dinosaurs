@@ -8,7 +8,7 @@ func _ready():
 	for font in scaled_font:
 		original_sizes[[font, "size"]] = font.size
 		original_sizes[[font, "outline"]] = font.outline_size
-	get_viewport().connect("size_changed", self, "resized")
+	me.check_error(get_viewport().connect("size_changed", self, "resized"))
 	call_deferred("resized")
 
 func resized():
@@ -18,4 +18,3 @@ func resized():
 		font.size = original_sizes[[font, "size"]] * scale_factor
 		font.outline_size = original_sizes[[font, "outline"]] * scale_factor
 		font.update_changes()
-

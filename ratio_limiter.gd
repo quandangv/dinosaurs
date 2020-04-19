@@ -4,7 +4,7 @@ export var max_h_v_ratio = 16.0/9
 export var margin = 20
 
 func _ready():
-	get_viewport().connect("size_changed", self, "resized")
+	me.check_error(get_viewport().connect("size_changed", self, "resized"))
 	resized()
 
 func resized():

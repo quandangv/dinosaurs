@@ -27,6 +27,9 @@ func assrt(value, message):
 		printerr(message)
 		assert(value)
 
+func check_error(value, message = "Can't make connection"):
+	assrt(value == OK, message);
+
 func check_null(value, message):
 	assrt(value != null, message)
 	return value

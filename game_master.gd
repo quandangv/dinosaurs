@@ -1,7 +1,5 @@
 extends Node
 
-signal language_changed
-
 export var skip_game = false
 export (NodePath) var tilemap
 export (NodePath) var main_menu
@@ -116,8 +114,6 @@ func _exit_tree():
 	save_settings()
 
 func bubble_selected(bubble):
-	var selection_map:TileMap = tilemap.get_node("borders")
-	var object_map:TileMap = tilemap.get_node("objects")
 	tilemap.selected_cell_type = bubble.get_cell_name()
 	tilemap.selected_choice = bubble
 
@@ -131,7 +127,7 @@ func reset_objects(step):
 			bubble.release_focus()
 			set_bubble_random(bubble, choice_steps[step])
 
-func _process(event):
+func _process(_event):
 	if auto_next and Input.is_action_just_pressed("ui_accept"):
 		game_next()
 
@@ -139,7 +135,7 @@ func game_progress():
 	$wiggles.stop()
 	main_menu.visible = false
 	_show_instructions()
-	
+
 	if !skip_game:
 		tilemap.generate_islands(land_ratio, wave_ratio)
 		game_choices.get_parent().visible = true
@@ -151,7 +147,7 @@ func game_progress():
 				$sfx.stream = ticks[randi()%ticks.size()]
 				$sfx.play()
 		game_choices.get_parent().visible = false
-	
+
 	# tallying the score
 	var next_button = game_over.get_node("margin/bottom/next")
 	next_button.text = "Next"
@@ -161,7 +157,7 @@ func game_progress():
 	next_button.visible = false
 	var used_cell = tilemap.get_used_cell_names()
 	var grand_total = 0
-	
+
 	game_over.get_node("margin/bottom/grand_total").text = String(grand_total)
 	for profile in game_over.get_node("margin/scroll/object_list").get_children():
 		profile.visible = false
@@ -185,10 +181,10 @@ func game_progress():
 	yield()
 	tilemap.game_over = false
 	game_over.visible = false
-	
+
 	message.visible = true
 	yield()
-	
+
 	main_menu.visible = true
 	$wiggles.start()
 
@@ -293,7 +289,7 @@ func check_points(coord, object_name):
 							point_added = -1 if conditions.find("skull") != -1 else 1
 					for i in points.size():
 						points[i] += point_added
-	
+
 	var is_ocean = tilemap.tile_categories["marine"].find(object_name) != -1
 	if is_ocean != (tilemap.get_env(coord) == "Ocean"):
 		for i in points.size():
