@@ -17,7 +17,7 @@
 0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
-2/name = "object tileset.svg 2"
+2/name = "Swamp Tree"
 2/texture = ExtResource( 1 )
 2/tex_offset = Vector2( 0, -32 )
 2/modulate = Color( 1, 1, 1, 1 )
@@ -31,7 +31,7 @@
 2/shape_one_way_margin = 0.0
 2/shapes = [  ]
 2/z_index = 0
-5/name = "object tileset.svg 5"
+5/name = "Pidgeon"
 5/texture = ExtResource( 1 )
 5/tex_offset = Vector2( 0, 0 )
 5/modulate = Color( 1, 1, 1, 1 )
@@ -45,7 +45,7 @@
 5/shape_one_way_margin = 0.0
 5/shapes = [  ]
 5/z_index = 0
-6/name = "object tileset.svg 6"
+6/name = "Field preview"
 6/texture = ExtResource( 1 )
 6/tex_offset = Vector2( 0, 0 )
 6/modulate = Color( 1, 1, 1, 1 )
@@ -59,7 +59,7 @@
 6/shape_one_way_margin = 0.0
 6/shapes = [  ]
 6/z_index = 0
-7/name = "object tileset.svg 7"
+7/name = "Chicken"
 7/texture = ExtResource( 1 )
 7/tex_offset = Vector2( 0, 0 )
 7/modulate = Color( 1, 1, 1, 1 )
@@ -73,7 +73,7 @@
 7/shape_one_way_margin = 0.0
 7/shapes = [  ]
 7/z_index = 0
-8/name = "object tileset.svg 8"
+8/name = "Swamp Plants"
 8/texture = ExtResource( 1 )
 8/tex_offset = Vector2( 0, 0 )
 8/modulate = Color( 1, 1, 1, 1 )
@@ -94,7 +94,7 @@
 8/shape_one_way_margin = 0.0
 8/shapes = [  ]
 8/z_index = 0
-9/name = "object tileset.svg 9"
+9/name = "Swamp preview"
 9/texture = ExtResource( 1 )
 9/tex_offset = Vector2( 0, 0 )
 9/modulate = Color( 1, 1, 1, 1 )
@@ -150,7 +150,7 @@
 12/shape_one_way_margin = 0.0
 12/shapes = [  ]
 12/z_index = 0
-13/name = "object tileset.svg 13"
+13/name = "Waves"
 13/texture = ExtResource( 1 )
 13/tex_offset = Vector2( 0, 0 )
 13/modulate = Color( 1, 1, 1, 1 )
@@ -192,7 +192,7 @@
 15/shape_one_way_margin = 0.0
 15/shapes = [  ]
 15/z_index = 0
-16/name = "object tileset.svg 16"
+16/name = "Tsunami"
 16/texture = ExtResource( 1 )
 16/tex_offset = Vector2( 0, 0 )
 16/modulate = Color( 1, 1, 1, 1 )
@@ -276,7 +276,7 @@
 21/shape_one_way_margin = 0.0
 21/shapes = [  ]
 21/z_index = 0
-22/name = "object tileset.svg 22"
+22/name = "Mountain"
 22/texture = ExtResource( 1 )
 22/tex_offset = Vector2( 0, 0 )
 22/modulate = Color( 1, 1, 1, 1 )
@@ -290,7 +290,7 @@
 22/shape_one_way_margin = 0.0
 22/shapes = [  ]
 22/z_index = 0
-23/name = "object tileset.svg 23"
+23/name = "Cactus"
 23/texture = ExtResource( 1 )
 23/tex_offset = Vector2( 0, 0 )
 23/modulate = Color( 1, 1, 1, 1 )
@@ -304,7 +304,7 @@
 23/shape_one_way_margin = 0.0
 23/shapes = [  ]
 23/z_index = 0
-24/name = "object tileset.svg 24"
+24/name = "Tree"
 24/texture = ExtResource( 1 )
 24/tex_offset = Vector2( 0, -32 )
 24/modulate = Color( 1, 1, 1, 1 )
@@ -430,3 +430,17 @@
 31/shape_one_way_margin = 0.0
 31/shapes = [  ]
 31/z_index = 0
+32/name = "Dry Tree"
+32/texture = ExtResource( 1 )
+32/tex_offset = Vector2( 0, 0 )
+32/modulate = Color( 1, 1, 1, 1 )
+32/region = Rect2( 1344, 0, 128, 192 )
+32/tile_mode = 0
+32/occluder_offset = Vector2( 0, 0 )
+32/navigation_offset = Vector2( 0, 0 )
+32/shape_offset = Vector2( 0, 0 )
+32/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+32/shape_one_way = false
+32/shape_one_way_margin = 0.0
+32/shapes = [  ]
+32/z_index = 0

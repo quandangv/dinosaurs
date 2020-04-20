@@ -7,7 +7,8 @@ var selected_cell_type
 var selected_choice
 
 export var margin_size = Vector2(40,40)
-export var map_size:float = 10
+export var map_size:float = 640
+export var map_division = 10
 export var submap_size = 40
 export var island_land_ratio = 0.8
 export var waves_preference = 3
@@ -58,23 +59,15 @@ var tile_categories = {
 }
 
 func _ready():
-	$background.rect_size = map_size*$objects.cell_size*$objects.scale + margin_size
+	$background.rect_size = map_size*$objects.scale + margin_size
 	selected_choice = null
 	export_map()
 	enclosure_tile = $enclosure.tile_set.find_tile_by_name("enclosure")
 	assert(enclosure_tile != -1)
-	
+
 	for obj in cell_types:
 		if !object_prefs.has(obj):
 			object_prefs[obj] = [base_rate,[]]
-	for cat in tile_categories.keys():
-		if pref_presets.has(cat):
-			for obj in tile_categories[cat]:
-				object_prefs[obj][1].push_back(cat)
-		if rate_presets.has(cat):
-			var rate_multiplier = rate_presets[cat]
-			for obj in tile_categories[cat]:
-				object_prefs[obj][0]*=rate_multiplier
 	for obj in cell_types:
 		var obj_presets = object_prefs[obj][1]
 		for meta_cat in default_presets:
@@ -86,84 +79,19 @@ func _ready():
 			if no_preset:
 				obj_presets.push_back(meta_cat[1])
 
-func _add_layer_props(layer, coord, dict, alpha):
-	var cell_name = me.get_tile_name(layer, coord)
-	var cell_props = tile_props.get(cell_name, null)
-	if cell_props != null:
-		for prop in cell_props.keys():
-			dict[prop] = cell_props[prop] if !dict.has(prop) else (cell_props[prop]*(alpha) + dict[prop]*(1-alpha))
-func get_props(coord):
-	var dict = base_prop.duplicate()
-	for pair in terrain_layers:
-		_add_layer_props(pair[0], coord, dict, 1)
-	_add_layer_props(blob_layer[0], coord, dict, 0.5)
-	return dict
-
-func calculate_rate(prefs, coord, mutiplier):
-	var env_props = get_props(coord)
-	var result = mutiplier
-	for prop in prefs.keys():
-		var pref = prefs[prop]
-		if env_props.has(prop):
-			# the first value is the ideal
-			var delta = pref[0] - env_props[prop]
-			# next values are the max and min
-			result *= 1 - abs(delta)*pref[1]
-		if result < 0:
-			result = 0
-	return result
-
-func gather_prefs(tile_name):
-	var result = {}
-	assert(object_prefs.has(tile_name))
-	var base_rate2 = object_prefs[tile_name][0]
-	var presets = object_prefs[tile_name][1]
-	for preset in presets:
-		for pref in pref_presets[preset]:
-			result[pref[0]] = pref[1]
-	return [base_rate2, result]
-
-func generate_submap(map_coord):
-	var map_size2 = submap_size
-	var base_layer = null
-	for pair in terrain_layers:
-		$map_generator.generate_submap_layer(base_layer, pair[0], $map_generator.get_context(pair[0], map_coord, pair[1]), pair[1], map_size2)
-		base_layer = pair[0]
-
-	base_layer = terrain_layers[0][0]
-	var current_layer = blob_layer[0]
-	var current_tile = current_layer.tile_set.find_tile_by_name(blob_layer[1])
-	var presence = $map_generator.get_presence_multiplier(current_layer, map_coord, blob_layer[1])
-	current_layer.clear()
-	for cell in $map_generator.generate_blobs(blob_rates[blob_layer[1]]*presence, base_layer, map_size2):
-		current_layer.set_cellv(cell, current_tile)
-	current_layer.update_bitmask_region()
-	current_layer = get_node(object_layer)
-	presence = $map_generator.get_all_presence_multiplier(current_layer, map_coord)
-	current_layer.clear()
-	for tile_name in presence.keys():
-		current_tile = current_layer.tile_set.find_tile_by_name(tile_name)
-		var prefs = gather_prefs(tile_name)
-		for x in map_size2:
-			for y in map_size2:
-				var coord = Vector2(x,y)
-				object_prefs.has(tile_name)
-				if randf() < calculate_rate(prefs[1], coord, prefs[0] * presence[tile_name]):
-					current_layer.set_cellv(coord, current_tile, randi() % 2 == 0)
-
 func generate_islands(land_ratio, wave_ratio):
 	$sand.clear()
 	$land.clear()
 	$marsh.clear()
 	$objects.clear()
-	for cell in $map_generator.generate_blobs(land_ratio, null, map_size):
+	for cell in $map_generator.generate_blobs(land_ratio, null, map_division):
 		set_env(cell, "Sand")
 	print(land_ratio*island_land_ratio)
-	for cell in $map_generator.generate_blobs(island_land_ratio, $sand, map_size):
+	for cell in $map_generator.generate_blobs(island_land_ratio, $sand, map_division):
 		set_env(cell, "Land")
 
-	for i in map_size:
-		for j in map_size:
+	for i in map_division:
+		for j in map_division:
 			var cell = Vector2(i,j)
 			if get_env(cell) == "Ocean" and randf() < wave_ratio:
 				set_object(cell, "Waves"if randf()*(waves_preference) < waves_preference else "Tsunami")
@@ -196,6 +124,11 @@ func get_random_subtile(tile_id):
 			if priority < 0:
 				return subtile
 
+func create_object(object_id):
+	var result = preload("res://scenes/object.tscn").instance()
+	result.set_tile(object_id)
+	return result
+
 func set_object(coord, cell_type):
 	var tile_id = me.object_tileset.find_tile_by_name(cell_type)
 	$objects.set_cell(coord.x, coord.y, tile_id, current_flip_x,
@@ -210,14 +143,14 @@ func _to_dict(map):
 	var coords = map.get_used_cells()
 	var result = {}
 	for coord in coords:
-		var name = me.get_tile_name(map, coord)
+		var name = me.name_by_coord(map, coord)
 		if name != "":
 			result[coord] = name
 	return result
 func _export_map(map):
 	var result = {}
 	for cell in map.get_used_cells():
-		result[cell] = me.get_tile_name(map, cell)
+		result[cell] = me.name_by_coord(map, cell)
 	return result
 func _string2vector2(cords):
 	cords.erase(cords.find("("),1)
@@ -243,15 +176,8 @@ func export_map():
 	exported_map = (to_json({
 		"sand":_export_map($sand),
 		"land":_export_map($land),
-		"objects":_export_map($objects),
 		"marsh":_export_map($marsh)
 	}))
-
-# clear all temporary tiles
-func clear_ghosts():
-	$objects_ghost.clear()
-	$overlay.clear()
-	$enclosure.clear()
 
 # get the environment of coord
 func get_env(coord):
@@ -283,11 +209,22 @@ func set_env(coord, env_name):
 		_:
 			assert(false)
 
+func get_used_cell_names():
+	var result = {}
+	for obj in $objects.get_children():
+		result[obj.position] = obj.object_id
+
+
+
 var current_operation_linker
-func put_object
+
+func put_object(object_id, choice):
+	current_operation_linker["object_id"] = object_id
+	current_operation_linker["choice"] = choice
+	_put_object(current_operation_linker)
+
 func _put_object(data):
-	var object = preload("res://scenes/object.tscn").instance()
-	object.set_tile(data["object_id"])
+	var object = create_object(data["object_id"])
 	object.modulate = Color(1,1,1,0.5)
 	while true:
 		yield(get_tree(),"idle_frame")
@@ -297,7 +234,9 @@ func _put_object(data):
 			object.position = coord
 			if Input.is_action_just_released("mouse_click"):
 				object.modulate = Color(1,1,1,1)
-				emit_signal("pressed")
+				emit_signal("pressed", data["choice"])
+
+
 
 #func _pressed():
 #	if _finalize_ghosts():
@@ -318,19 +257,6 @@ var map_region = Rect2(0,0,map_size,map_size)
 func in_board(coord):
 	return map_region.has_point(coord)
 
-func _process(_delta):
-	if !game_over and selected_cell_type != null:
-		var coord = $objects.world_to_map($objects.get_local_mouse_position())
-		if in_board(coord):
-			emit_signal("hovered", coord, selected_cell_type)
-			$objects_ghost.clear()
-			$objects_ghost.set_cellv(coord, me.get_preview_tile(selected_cell_type))
-
 func focus(coord):
 	$enclosure.clear()
 	$enclosure.set_cellv(coord, enclosure_tile)
-
-func get_tilemap_cell(coord):
-	var cell = $objects.get_cellv(coord)
-	if cell != -1:
-		return me.me.object_tileset.tile_get_name(cell)

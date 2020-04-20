@@ -1,5 +1,7 @@
 extends Node
 
+signal language_changed
+
 export var skip_game = false
 export (NodePath) var tilemap
 export (NodePath) var main_menu
@@ -114,8 +116,7 @@ func _exit_tree():
 	save_settings()
 
 func bubble_selected(bubble):
-	tilemap.selected_cell_type = bubble.get_cell_name()
-	tilemap.selected_choice = bubble
+	tilemap.put_object(me.get_tile_id(bubble.get_cell_name()), bubble)
 
 func reset_objects(step):
 	tilemap.selected_cell_type = null
@@ -153,7 +154,6 @@ func game_progress():
 	next_button.text = "Next"
 	game_over.visible = true
 	auto_next = true
-	tilemap.game_over = true
 	next_button.visible = false
 	var used_cell = tilemap.get_used_cell_names()
 	var grand_total = 0
@@ -164,7 +164,7 @@ func game_progress():
 	for profile in game_over.get_node("margin/scroll/object_list").get_children():
 		var total = 0
 		for cell in used_cell.keys():
-			if used_cell[cell] == profile.name:
+			if me.get_tile_name(used_cell[cell]) == profile.name:
 				profile.visible = true
 				for point in tilemap.display_cell_detail(cell, profile.name).values():
 					total += point

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://play_board.gd" type="Script" id=1]
 [ext_resource path="res://tiles/enclosure.tres" type="TileSet" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://background.svg" type="Texture" id=5]
 [ext_resource path="res://map_generator.gd" type="Script" id=6]
 [ext_resource path="res://scenes/object.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/world.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 5 )
@@ -16,6 +17,7 @@ region_rect = Rect2( 0, 0, 2464, 2464 )
 script = ExtResource( 1 )
 margin_size = null
 map_size = null
+map_division = null
 submap_size = null
 island_land_ratio = null
 waves_preference = null
@@ -23,6 +25,7 @@ tsunami_preference = null
 cell_types = null
 
 [node name="objects" type="Node2D" parent="."]
+script = ExtResource( 8 )
 
 [node name="obj" parent="objects" instance=ExtResource( 7 )]
 
