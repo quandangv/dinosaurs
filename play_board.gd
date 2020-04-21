@@ -8,7 +8,7 @@ var selected_choice
 
 export var margin_size = Vector2(40,40)
 export var map_size:float = 640
-export var map_division = 10
+export var map_division = 15
 export var submap_size = 40
 export var island_land_ratio = 0.8
 export var waves_preference = 3
@@ -61,7 +61,6 @@ var tile_categories = {
 func _ready():
 	$background.rect_size = map_size*$objects.scale + margin_size
 	selected_choice = null
-	export_map()
 	enclosure_tile = $enclosure.tile_set.find_tile_by_name("enclosure")
 	assert(enclosure_tile != -1)
 
@@ -79,22 +78,35 @@ func _ready():
 			if no_preset:
 				obj_presets.push_back(meta_cat[1])
 
-func generate_islands(land_ratio, wave_ratio):
-	$sand.clear()
-	$land.clear()
-	$marsh.clear()
-	$objects.clear()
-	for cell in $map_generator.generate_blobs(land_ratio, null, map_division):
-		set_env(cell, "Sand")
-	print(land_ratio*island_land_ratio)
-	for cell in $map_generator.generate_blobs(island_land_ratio, $sand, map_division):
-		set_env(cell, "Land")
+func _put_blobs(blob, unit_size, color, _pos, _size):
+	blob.modulate = color
+	blob.rect_position = $map_generator.axonometric_to_world(_pos, unit_size)
+	blob.rect_min_size = Vector2(1,1)*_size*unit_size
 
-	for i in map_division:
-		for j in map_division:
-			var cell = Vector2(i,j)
-			if get_env(cell) == "Ocean" and randf() < wave_ratio:
-				set_object(cell, "Waves"if randf()*(waves_preference) < waves_preference else "Tsunami")
+func put_blobs(blobs, color, unit_size):
+	for position in blobs.keys():
+		var blob = preload("res://scenes/terrain_blob.tscn").instance()
+		$terrain.add_child(blob)
+		_put_blobs(blob, unit_size, color, position, blobs[position])
+	return blobs
+
+export var land_ratio = 0.4
+export var sand_color:Color
+export var land_color:Color
+export var blob_min = 1.1547005383792515290182975610039
+export var blob_max = 3.0
+func generate_islands():
+	$objects.clear()
+	var blobs = null
+	var unit_size = map_size / map_division
+	var region_min = Vector2(-1,-1) * unit_size
+	var region_max = Vector2(map_size, map_size) - region_min
+	region_min = ($map_generator.world_to_axonometric(region_min, unit_size)).round()
+	region_max = ($map_generator.world_to_axonometric(region_max, unit_size)).round()
+	blobs = put_blobs($map_generator.generate_blobs(land_ratio, blobs, Rect2(region_min, region_max-region_min), $map_generator.axonometric_neighbors, blob_min, blob_max), sand_color, unit_size)
+	blobs = put_blobs($map_generator.generate_blobs(island_land_ratio, blobs, Rect2(region_min, region_max-region_min), $map_generator.axonometric_neighbors, blob_min, blob_max, 0.7), land_color, unit_size)
+
+
 
 func get_random_subtile(tile_id):
 	# Calculate the size of the autotile in number of tiles instead of in pixels
@@ -129,55 +141,8 @@ func create_object(object_id):
 	result.set_tile(object_id)
 	return result
 
-func set_object(coord, cell_type):
-	var tile_id = me.object_tileset.find_tile_by_name(cell_type)
-	$objects.set_cell(coord.x, coord.y, tile_id, current_flip_x,
-		false,false,get_random_subtile(tile_id))
-	if cell_type == "Marsh":
-		$marsh.set_cellv(coord, $marsh.tile_set.find_tile_by_name("Marsh"))
-		$marsh.update_bitmask_region()
 
 
-
-func _to_dict(map):
-	var coords = map.get_used_cells()
-	var result = {}
-	for coord in coords:
-		var name = me.name_by_coord(map, coord)
-		if name != "":
-			result[coord] = name
-	return result
-func _export_map(map):
-	var result = {}
-	for cell in map.get_used_cells():
-		result[cell] = me.name_by_coord(map, cell)
-	return result
-func _string2vector2(cords):
-	cords.erase(cords.find("("),1)
-	cords.erase(cords.find(")"),1)
-	cords.erase(cords.find(","),1)
-	var x = cords.left(cords.find(" "))
-	var y = cords.right(cords.find(" "))
-	return Vector2(x,y)
-func _import_map(map, dict, randomized = false):
-	for cell in dict.keys():
-		map.set_cellv(_string2vector2(cell), map.tile_set.find_tile_by_name(dict[cell]), randomized and randi() % 2 == 0)
-	map.update_bitmask_region()
-
-# import and display a map configuration from a string
-func import_map(string):
-	clear()
-	var dict = parse_json(string)
-	for key in dict.keys():
-		_import_map(get_node(key), dict[key], key == "objects")
-
-# write the current map configuration into `exported_map` which can be copied from the inspector
-func export_map():
-	exported_map = (to_json({
-		"sand":_export_map($sand),
-		"land":_export_map($land),
-		"marsh":_export_map($marsh)
-	}))
 
 # get the environment of coord
 func get_env(coord):
@@ -247,11 +212,7 @@ func _put_object(data):
 
 # clear all tiles
 func clear():
-	$sand.clear()
-	$land.clear()
 	$objects.clear()
-	$marsh.clear()
-	$enclosure.clear()
 
 var map_region = Rect2(0,0,map_size,map_size)
 func in_board(coord):

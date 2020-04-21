@@ -148,19 +148,19 @@ func generate_submap_layer(base_layer:TileMap, current_layer:TileMap, context, t
 		_update_borders(base_layer, current_layer, empty_border, tile_border, tile_coord, map_size)
 	current_layer.update_bitmask_region()
 
-func fill_all_cells(map_size, base_layer = null):
+func fill_all_cells(region, base_positions = null):
 	var result = []
-	for i in map_size:
-		for j in map_size:
+	for i in range(region.position.x, region.end.x):
+		for j in range(region.position.y, region.end.y):
 			var coord = Vector2(i,j)
-			if base_layer == null or base_layer.get_cellv(coord) != -1:
+			if base_positions == null or base_positions.has(coord):
 				_insert_random(result, coord)
 	return result
 
-func generate_blobs(rate, base_layer:TileMap, map_size):
-	var far_cells = fill_all_cells(map_size, base_layer)
+func generate_positions(rate, base_positions, region:Rect2, neighbors):
+	var far_cells = fill_all_cells(region, base_positions)
 	var near_cells = []
-	var near_cell_preference = map_size*map_size*blob_roundness
+	var near_cell_preference = region.get_area()*blob_roundness
 	var count = round(far_cells.size()*rate)
 	var result = []
 	while true:
@@ -178,19 +178,19 @@ func generate_blobs(rate, base_layer:TileMap, map_size):
 		if selected_cell == null or count <= 0:
 			break
 		# double check that the selected cell is of the desired environment
-		if (base_layer == null or base_layer.get_cellv(selected_cell) != -1) and result.find(selected_cell) == -1:
+		if (base_positions == null or base_positions.has(selected_cell)) and result.find(selected_cell) == -1:
 			result.push_back(selected_cell)
 			count -= 1
 			# add all adjacent cells of the selected cell to near_cells
 			# this will create duplicates in this array that will favor the selection of cells with more adjacents
 			# this will effectively make more blob-shaped generation
-			for cell in me.near_vectors:
+			for cell in neighbors:
 				cell += selected_cell
 				# remove the cell from far_cells since it is already adjacent to a chosen cell
 				var far_index = far_cells.find(cell)
 				if far_index != -1:
 					far_cells.remove(far_index)
-				if in_board(cell, map_size) and (base_layer == null or base_layer.get_cellv(cell) != -1)  and result.find(cell) == -1:
+				if region.has_point(cell) and (base_positions == null or base_positions.has(cell))  and result.find(cell) == -1:
 					_insert_random(near_cells, cell)
 		# remove all the duplicates of the selected cells from near_cells
 		# far_cells doesn't contain duplicates and its element does not appear in near_cells so we don't have to worry about them
@@ -201,3 +201,24 @@ func generate_blobs(rate, base_layer:TileMap, map_size):
 			else: break
 	return result
 
+var axonometric_neighbors = [Vector2(0,1), Vector2(0,-1), Vector2(1,-1), Vector2(1,0), Vector2(-1,-1), Vector2(-1,0)]
+var sqrt3div2 = 0.86602540378443864676372317075294
+
+func world_to_axonometric(position, axo_unit_size):
+	position /= axo_unit_size;
+	position.x /= sqrt3div2
+	position.y -= abs(fposmod(position.x+1,2)-1)/2
+	return position
+
+func axonometric_to_world(position, axo_unit_size):
+	position.y += abs(fposmod(position.x+1,2)-1)/2
+	position.x *= sqrt3div2
+	position *= axo_unit_size;
+	return position
+
+func generate_blobs(rate, base_blobs, region, neighbors, size_min, size_max, max_mul = 1):
+	var positions = generate_positions(rate, null if base_blobs == null else base_blobs.keys(), region, neighbors);
+	var result = {}
+	for blob in positions:
+		result[blob] = lerp(size_min, (size_max if base_blobs == null else base_blobs[blob])*max_mul, randf())
+	return result

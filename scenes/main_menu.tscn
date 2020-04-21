@@ -177,14 +177,6 @@ script = ExtResource( 7 )
 
 [node name="world" parent="CanvasLayer/margin/game_box/viewport" instance=ExtResource( 8 )]
 scale = Vector2( 1.014, 1.014 )
-margin_size = Vector2( 40, 40 )
-map_size = 640.0
-map_division = 10
-submap_size = 40
-island_land_ratio = 0.8
-waves_preference = 3
-tsunami_preference = 1
-cell_types = [ "Hungry Dino", "Shark", "Coral", "Field", "Lonely Dino", "Mountain", "Shrub", "Social Dino", "Tree", "Waves", "Chicken", "Wolf", "Tsunami", "Marsh", "Sunken Ship", "Forgotten Temple" ]
 
 [node name="info_box" type="Control" parent="CanvasLayer/margin"]
 anchor_bottom = 1.0

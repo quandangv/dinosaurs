@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+corner_detail = 12
+
+[node name="terrain_blob" type="Panel"]
+modulate = Color( 1, 0.92549, 0.45098, 1 )
+margin_right = 1.0
+margin_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

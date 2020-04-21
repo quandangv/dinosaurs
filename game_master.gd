@@ -19,7 +19,6 @@ export var sea_color:Color
 export var land_color:Color
 export var sand_color:Color
 export var wave_ratio = 0.07
-export var land_ratio = 0.55
 export var full_points:float = 4
 
 export(Array, String) var cell_types
@@ -138,7 +137,7 @@ func game_progress():
 	_show_instructions()
 
 	if !skip_game:
-		tilemap.generate_islands(land_ratio, wave_ratio)
+		tilemap.generate_islands()
 		game_choices.get_parent().visible = true
 		for step in choice_steps.size():
 			reset_objects(step)
@@ -192,7 +191,6 @@ func start_game(game_seed):
 	tilemap.clear()
 	seed(hash(game_seed))
 	_game_progress = game_progress()
-	tilemap.clear_placement()
 
 func daily_game():
 	var date = OS.get_date()
@@ -224,6 +222,7 @@ func show_stats(coord, name):
 
 func _add_point(dict, key, point):
 	dict[key] = dict.get(key,0)+point
+# dirty
 func check_points(coord, object_name):
 	var points = []
 	var game_master = get_node("/root/game_master")
