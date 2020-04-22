@@ -4,53 +4,16 @@ signal pressed
 signal hovered
 
 var selected_cell_type
-var selected_choice
 
 export var margin_size = Vector2(40,40)
 export var map_size:float = 640
 export var map_division = 15
-export var submap_size = 40
 export var island_land_ratio = 0.8
 export var waves_preference = 3
 export var tsunami_preference = 1
-export(Array, String) var cell_types = [
-	"Hungry Dino", "Shark", "Coral", "Field", "Lonely Dino", "Mountain",
-	"Shrub", "Social Dino", "Tree", "Waves", "Chicken", "Wolf", "Tsunami",
-	"Marsh", "Sunken Ship", "Forgotten Temple"
-]
 
 var atlas_tile_total = {}
-
-var game_over
 var current_flip_x = true
-var cell_category = {
-	"animal": ["Hungry Dino", "Lonely Dino", "Social Dino", "Shark", "Chicken"],
-	"natural": ["Hungry Dino", "Lonely Dino", "Social Dino", "Shark", "Waves", "Tree", "Coral", "Shrub", "Mountain", "Field"],
-	"plant": ["Tree", "Shrub", "Field"],
-	"crowding": ["Tree", "Shrub"],
-	"beast": ["Shark", "Hungry Dino", "Social Dino", "Wolf"],
-	"waves": ["Waves", "Tsunami"]
-	}
-var exported_map
-var enclosure_tile
-
-onready var terrain_layers = [[$sand, "Sand"], [$land, "Land"]]
-onready var blob_layer = [$marsh, "Marsh"]
-var object_layer = "objects"
-var blob_rates = {"Marsh":0.13}
-
-var base_rate = 0.08
-var rate_presets = {"dry":0.5, "animal":0.1}
-var pref_presets = {"dry":[["dryness", [0.9, 1.4]]],
-	"temperate":[["dryness", [0.5, 1.4]]],
-	"non_marine":[["depth", [0, 1]]],
-	"marine":[["depth", [1, 0.5]]],
-	"dryness_neutral":[]}
-# the pref of each object is like [base_rate, [presets]]
-var object_prefs = {"Tree": [0.08, []], "Shrub": [0.04, []], "Hungry Dino":[0.04,["dryness_neutral"]]}
-var base_prop = {"dryness":0, "depth":1}
-var tile_props = {"Sand":{"dryness":1, "depth":0}, "Land":{"dryness":0.5}, "Marsh":{"dryness":0}}
-var default_presets = [[["marine"], "non_marine"], [["dry", "dryness_neutral"], "temperate"]]
 var tile_categories = {
 	"marine":[ "Shark", "Coral", "Tsunami", "Waves", "Sunken Ship" ],
 	"temperate":["Tree"],
@@ -60,23 +23,6 @@ var tile_categories = {
 
 func _ready():
 	$background.rect_size = map_size*$objects.scale + margin_size
-	selected_choice = null
-	enclosure_tile = $enclosure.tile_set.find_tile_by_name("enclosure")
-	assert(enclosure_tile != -1)
-
-	for obj in cell_types:
-		if !object_prefs.has(obj):
-			object_prefs[obj] = [base_rate,[]]
-	for obj in cell_types:
-		var obj_presets = object_prefs[obj][1]
-		for meta_cat in default_presets:
-			var no_preset = true
-			for alt in meta_cat[0]:
-				if obj_presets.has(alt):
-					no_preset = false
-					break
-			if no_preset:
-				obj_presets.push_back(meta_cat[1])
 
 func _put_blobs(blob, unit_size, color, _pos, _size):
 	blob.modulate = color
@@ -201,15 +147,6 @@ func _put_object(data):
 				object.modulate = Color(1,1,1,1)
 				emit_signal("pressed", data["choice"])
 
-
-
-#func _pressed():
-#	if _finalize_ghosts():
-#		selected_cell_type = null
-#		$overlay.clear()
-#		emit_signal("pressed", selected_choice)
-#		current_flip_x = randi()%2 == 0
-
 # clear all tiles
 func clear():
 	$objects.clear()
@@ -217,7 +154,3 @@ func clear():
 var map_region = Rect2(0,0,map_size,map_size)
 func in_board(coord):
 	return map_region.has_point(coord)
-
-func focus(coord):
-	$enclosure.clear()
-	$enclosure.set_cellv(coord, enclosure_tile)
