@@ -1,6 +1,6 @@
 extends Node
 
-signal language_changed
+# signal language_changed
 
 export var skip_game = false
 export (NodePath) var tilemap

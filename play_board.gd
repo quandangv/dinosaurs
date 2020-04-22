@@ -46,7 +46,7 @@ func generate_islands():
 	var blobs = null
 	var unit_size = map_size / map_division
 	var region_min = Vector2(-1,-1) * unit_size
-	var region_max = Vector2(map_size, map_size) - region_min
+	var region_max = Vector2(map_size, map_size) + Vector2(1,1) * unit_size - region_min
 	region_min = ($map_generator.world_to_axonometric(region_min, unit_size)).round()
 	region_max = ($map_generator.world_to_axonometric(region_max, unit_size)).round()
 	blobs = put_blobs($map_generator.generate_blobs(land_ratio, blobs, Rect2(region_min, region_max-region_min), $map_generator.axonometric_neighbors, blob_min, blob_max), sand_color, unit_size)
