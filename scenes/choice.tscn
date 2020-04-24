@@ -3,7 +3,6 @@
 [ext_resource path="res://choice_screen_scaler.gd" type="Script" id=2]
 [ext_resource path="res://choice.gd" type="Script" id=3]
 
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.901961, 0.901961, 0.901961, 1 )
 border_width_left = 4
@@ -103,8 +102,12 @@ script = ExtResource( 2 )
 [node name="tile" type="TextureRect" parent="minimized"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
 expand = true
-stretch_mode = 1
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }

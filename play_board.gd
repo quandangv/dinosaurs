@@ -130,9 +130,10 @@ func get_used_cell_names():
 var current_operation_linker
 
 func put_object(object_id, choice):
-	current_operation_linker["object_id"] = object_id
-	current_operation_linker["choice"] = choice
-	_put_object(current_operation_linker)
+	if object_id != null:
+		current_operation_linker["object_id"] = object_id
+		current_operation_linker["choice"] = choice
+		_put_object(current_operation_linker)
 
 func _put_object(data):
 	var object = create_object(data["object_id"])
