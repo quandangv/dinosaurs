@@ -1,0 +1,235 @@
+{
+  "type_model": {
+    "keys": ["texts", "transformations"]
+    "child": [
+      { "_": "texts"
+        "keys": ["name", "description"]
+        "child-template": ["en", "vi"]
+      },
+      { "_": "transformations"
+      }
+    ]
+  }
+  "type": {
+    "Waves": {[[
+        ["Waves"],
+        [""]
+      ], {
+
+    }]},
+    "Tsunami": {[[
+        ["Tsunami"],
+        [""]
+      ], {
+
+    }]},
+    "Swamp": {[[
+        ["Swamp"],
+        [""]
+      ], {
+
+    }]},
+    "Mountain": {[[
+        ["Mountain"],
+        [""]
+      ], {
+
+    }]},
+
+
+    "Giant Octopus": {[[
+        ["Giant Octopus"],
+        [""]
+      ], {
+
+    }]},
+
+
+
+
+    "Pidgeon": {[[
+        ["Pidgeon"],
+        [""]
+      ], {
+
+    }]},
+    "Chicken": {[[
+        ["Chicken"],
+        [""]
+      ], {
+
+    }]},
+    "Swamp Bird": {[[
+        ["Swamp Bird"],
+        [""]
+      ], {
+
+    }]},
+    "Vulture": {[[
+        ["Vulture"],
+        [""]
+      ], {
+
+    }]},
+
+
+
+
+    "Thrumbo": {[[
+        ["Thrumbo"],
+        [""]
+      ], {
+
+    }]},
+    "Hippo": {[[
+        ["Hippo"],
+        [""]
+      ], {
+
+    }]},
+    "Sheep": {[[
+        ["Sheep"],
+        [""]
+      ], {
+
+    }]},
+    "Cat": {[[
+        ["Cat"],
+        [""]
+      ], {
+
+    }]},
+    "Wolf": {[[
+        ["Wolf"],
+        [""]
+      ], {
+
+    }]},
+
+
+
+
+    "Shark": {[[
+        ["Shark"],
+        [""]
+      ], {
+
+    }]},
+    "Coral": {[[
+        ["Coral"],
+        [""]
+      ], {
+
+    }]},
+
+
+
+
+    "Shrimp": {[[
+        ["Shrimp"],
+        [""]
+      ], {
+
+    }]},
+    "Scorpion": {[[
+        ["Scorpion"],
+        [""]
+      ], {
+
+    }]},
+    "Lobster": {[[
+        ["Lobster"],
+        [""]
+      ], {
+
+    }]},
+
+
+
+
+    "Lizard": {[[
+        ["Diasid"],
+        ["The ancestor of anything from snakes to dinosaurs"]
+      ], {
+
+    }]},
+    "Crocodile": {[[
+        ["Crocodile"],
+        [""]
+      ], {
+
+    }]},
+    "Snake": {[[
+        ["Snake"],
+        ["Snakes are elongated, legless, carnivorous reptiles covered in overlapping scales."]
+      ], {
+
+    }]},
+
+
+    "Hungry Dino": {[[
+        ["Hungry Dino"],
+        ["The Hungry Dino is a bipedal carnivore with a massive skull balanced by a long, heavy tail."]
+      ], {
+
+    }]},
+    "Lonely Dino": {[[
+        ["Lonely Dino"],
+        ["The Lonely Dino is a quadruped with a small skull, a long neck, a long, muscular tail and slender, columnar limbs."]
+      ], {
+
+    }]},
+    "Social Dino": {[[
+        ["Social Dino"],
+        [""]
+      ], {
+
+  ``  }
+    ]},
+
+
+
+
+    "Plant": {[[
+        ["Seedling"],
+        ["The origin of all things green. What will it grow up to be?"]
+      ], {
+        "Field": "rand",
+        "Young Tree": "rand",
+        "Cactus": "sand",
+    }]},
+    "Field": {[[
+        ["Field"],
+        ["The plants are spreading far and wide. One day they will provide sustenance for the animals"]
+      ], {
+    }]},
+    "Young Tree": {[[
+        ["Young Tree"],
+        ["The plant is growing strong! The right environment is needed so that it can grow into a big tree soon."]
+      ], {
+        "Swamp Tree": "swamp",
+        "Dry Tree": "sand_land",
+        "Tree": "land",
+    }]},
+    "Swamp Tree": {[[
+        ["Swamp Tree"],
+        ["The tree grows vines and thorns, becoming a shelter for every critters around it"]
+      ], {
+    }]},
+    "Cactus": {[[
+        ["Cactus"],
+        ["Wrapped with thorns, but can be useful for those who know what to do"]
+      ], {
+    }]},
+    "Tree": {[[
+        ["Tree"],
+        ["Tall and strong, maybe you can build something out of it?"]
+      ], {
+    }]},
+    "Dry Tree": {[[
+        ["Dry Tree"],
+        ["Dry and brittle, it didn't get the right condition to thrive"]
+      ], {
+    }]},
+  }
+}

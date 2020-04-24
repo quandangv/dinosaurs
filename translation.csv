@@ -1,37 +1,71 @@
-id;en;vi
-Hungry Dino;Hungry Dino;Khủng long đỏ
-Shark;Shark;Cá mập
-Coral;Coral;San hô
-Field;Field;Cánh đồng
-Lonely Dino;Lonely Dino;Khủng long xanh
-Mountain;Mountain;Núi
-Shrub;Shrub;Cây khô
-Social Dino;Social Dino;Khủng long vàng
-Tree;Tree;Cây khô
-Tsunami;Tsunami;Sóng Thần
-Waves;Waves;Sóng biển
-Chicken;Chicken;Cừu
-Wolf;Wolf;Sói
-Marsh;Marsh;
-Sunken Ship;Sunken Ship;
-Forgotten Temple;Forgotten Temple;
-;;
-Hungry Dino text;The Hungry Dino just eats and eats and never stops;Khủng long đỏ chỉ thích làm một việc, đó là ăn, ăn, và không bao giờ ngừng nghỉ
-Shark text;As masters of the sea, the Sharks likes to roam among the great waves;Là bá chủ đại dương, Cá mập thích vùng vẫy với những con sóng lớn
+id;en
+Coral;Coral
+Swamp Tree;Swamp Tree
+Pidgeon;Pidgeon
+Field;Field
+Chicken;Chicken
+Swamp;Swamp
+Swamp Bird;Swamp Bird
+Giant Octopus;Giant Octopus
+Hippo;Hippo
+Waves;Waves
+Crocodile;Crocodile
+Sheep;Sheep
+Tsunami;Tsunami
+Scorpion;Scorpion
+Thrumbo;Thrumbo
+Shark;Shark
+Cat;Cat
+Vulture;Vulture
+Mountain;Mountain
+Cactus;Cactus
+Tree;Tree
+Snake;Snake
+Shrimp;Shrimp
+Lizard;Lizard
+Wolf;Wolf
+Lobster;Lobster
+Dry Tree;Dry Tree
+Hungry Dino;Hungry Dino
+Lonely Dino;Lonely Dino
+Social Dino;Social Dino
+Plant;Plant
+;
 Coral text;The Corals are peaceful, and all life thrives around it;San hô là loài vật hiền lành, vì vậy muôn loài sinh sôi xung quanh nó
-Lonely Dino text;The gigantic Lonely Dino is a benevolent creature and a guardian of nature;Con Khủng long xanh to lớn lại là một loài vật hiền lành, một vệ sĩ bảo vệ thiên nhiên
-Mountain text;Made from the bedrock that supports our world, the Mountain happily gives itself for forests to thrive on;chưa được viết
-Shrub text;The Shrubs thrive on the dry sand where few survives;chưa được viết
-Social Dino text;The horde of Social Dinos is a ravenous one. Trees, shrubs or grass, nothing escapes their beaks;chưa được viết
-Tree text;The Trees are strongest together;chưa được viết
-Tsunami text;It’s just a big wave lol;chưa được viết
-Waves text;It’s literally waves;chưa được viết
-Chicken text;The peaceful Chicken is happy wherever there is grass, often unknowingly become prey for stronger creatures;chưa được viết
-Wolf text;The Wolf are violent creatures, yet they are necessary for the balance of nature;chưa được viết
+Swamp Tree text;
+Pidgeon text;
 Field text;The Fields are gentle and delicate, they would not win in a struggle for resources;
-Marsh text;The Marsh is located in wet regions of the land, providing diversity for the ecosystem;
+Chicken text;The peaceful Chicken is happy wherever there is grass, often unknowingly become prey for stronger creatures;chưa được viết
+Swamp text;The Marsh is located in wet regions of the land, providing diversity for the ecosystem;
+Swamp Bird text;
+Giant Octopus text;
+Hippo text;
+Waves text;It’s literally waves;chưa được viết
+Crocodile text;
+Sheep text;
+Tsunami text;It’s just a big wave lol;chưa được viết
+Scorpion text;
+Thrumbo text;
+Shark text;As masters of the sea, the Sharks likes to roam among the great waves;Là bá chủ đại dương, Cá mập thích vùng vẫy với những con sóng lớn
+Cat text;
+Vulture text;
+Mountain text;Made from the bedrock that supports our world, the Mountain happily gives itself for forests to thrive on;chưa được viết
+Cactus text;
+Tree text;The Trees are strongest together;chưa được viết
+Snake text;
+Shrimp text;
+Lizard text;
+Wolf text;The Wolf are violent creatures, yet they are necessary for the balance of nature;chưa được viết
+Lobster text;
+Dry Tree text;The Shrubs thrive on the dry sand where few survives;chưa được viết
+Hungry Dino text;The Hungry Dino just eats and eats and never stops;Khủng long đỏ chỉ thích làm một việc, đó là ăn, ăn, và không bao giờ ngừng nghỉ
+Lonely Dino text;The gigantic Lonely Dino is a benevolent creature and a guardian of nature;Con Khủng long xanh to lớn lại là một loài vật hiền lành, một vệ sĩ bảo vệ thiên nhiên
+Social Dino text;The horde of Social Dinos is a ravenous one. Trees, shrubs or grass, nothing escapes their beaks;chưa được viết
+Plant text;
+;
 Sunken Ship text;The Sunken Ship may carry unknown treasures. But the presence of the ship itself causes strange effects on the surroundings;
 Forgotten Temple text;The Forgotten Temple lies hidden in the deep jungle, surrounded by savage beasts;
+;
 land;This %s likes to be on fertile land;Cây này thích ở trên đất màu mỡ
 sand;This %s likes to be on dry sand;Cây này thích ở trên cát khô
 uncrowded;This %s likes to be in open areas with no forests;Vật này thích ở nơi trống trải, không có rừng cây
@@ -47,9 +81,7 @@ guardian;This %s is the bane of selfish entities. But to others, it is benevolen
 no_sand;This %s doesn’t like to be near sand;
 green_heart;This %s helps tree around it;
 bloody_heart;This %s empowers violent animals around it;
-;;
-;;
-;;
-;;
+;
+;
 view icon prompt;Move your mouse to the icons to view more;Đưa chuột tới các icon để xem thêm
 put object prompt;Take these objects and put them on the map;Hãy đặt những thứ này lên bản đồ
